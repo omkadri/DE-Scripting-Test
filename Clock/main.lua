@@ -16,5 +16,6 @@ function love.draw()
     love.graphics.setColor(1,0,0)
     love.graphics.line(100,100, 100,150)
 
+    love.graphics.print(os.date(),0,200)
 end
 --this function is for drawing graphics on screen (at every frame)
