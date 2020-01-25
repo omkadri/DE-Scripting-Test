@@ -30,12 +30,17 @@ function love.draw()
   if gameStarted == true then
     love.graphics.setColor(255,0,0)
     love.graphics.circle("fill", button.x, button.y, button.size)
+    love.graphics.setFont(myFont)
+    love.graphics.setColor(255,255,255)
+    love.graphics.print("Score: "..score)
+    love.graphics.print("Time: "..math.ceil(timer), 625,0)
   end
 
-  love.graphics.setFont(myFont)
-  love.graphics.setColor(255,255,255)
-  love.graphics.print(score)
-  love.graphics.print(math.ceil(timer), 100,0)
+  if gameStarted == false then
+    love.graphics.setFont(myFont)
+    love.graphics.printf("Click anywhere to begin!", 0, love.graphics.getHeight()/2,love.graphics.getWidth(), "center")
+  end
+
 end
 
 function love.mousepressed(x, y, mouseButton, isTouch)
