@@ -24,3 +24,16 @@ function love.draw()
   love.graphics.setColor(255,255,255)
   love.graphics.print(score)
 end
+
+function love.mousepressed(x, y, mouseButton, isTouch)
+  if mouseButton==1 then
+    if distanceFromRadius(button.x, button.y, love.mouse.getX(),love.mouse.getY()) < button.size then
+      score = score + 1
+    end
+  end
+end
+
+
+function distanceFromRadius (x1, y1, x2, y2)
+  return math.sqrt((y2-y1)^2 + (x1 - x2)^2 )
+end
