@@ -7,31 +7,50 @@ function love.load()
 
     --global game variables
     score = 0
-    timer = 0
+    timer = 10
+    gameStarted = false
 
     myFont = love.graphics.newFont(40)
 end
 
 function love.update(dt)
+  if gameStarted == true then
+    if timer > 0 then
+      timer = timer - dt
+    end
 
+    if timer < 0 then
+      timer = 0
+      gameStarted = false
+    end
+  end
 end
 
 function love.draw()
-  love.graphics.setColor(255,0,0)
-  love.graphics.circle("fill", button.x, button.y, button.size)
+  if gameStarted == true then
+    love.graphics.setColor(255,0,0)
+    love.graphics.circle("fill", button.x, button.y, button.size)
+  end
 
   love.graphics.setFont(myFont)
   love.graphics.setColor(255,255,255)
   love.graphics.print(score)
+  love.graphics.print(math.ceil(timer), 100,0)
 end
 
 function love.mousepressed(x, y, mouseButton, isTouch)
-  if mouseButton==1 then
+  if mouseButton==1 and gameStarted == true then
     if distanceFromRadius(button.x, button.y, love.mouse.getX(),love.mouse.getY()) < button.size then
       score = score + 1
       button.x = math.random(button.size,love.graphics.getWidth()-button.size)
       button.y = math.random(button.size,love.graphics.getHeight()-button.size)
     end
+  end
+
+  if gameStarted == false then
+    gameStarted = true
+    timer = 10
+    score = 0
   end
 end
 
