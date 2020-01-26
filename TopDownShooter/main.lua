@@ -1,18 +1,20 @@
 function love.load()
-  sprites = {}
-  sprites.player = love.graphics.newImage('sprites/player.png')
-  sprites.bullet = love.graphics.newImage('sprites/bullet.png')
-  sprites.zombie = love.graphics.newImage('sprites/zombie.png')
-  sprites.background = love.graphics.newImage('sprites/background.png')
+	sprites = {}
+	sprites.player = love.graphics.newImage('sprites/player.png')
+	sprites.bullet = love.graphics.newImage('sprites/bullet.png')
+	sprites.zombie = love.graphics.newImage('sprites/zombie.png')
+	sprites.background = love.graphics.newImage('sprites/background.png')
   
-  --offsets
-  playerOffsetX = sprites.player:getWidth()/2
-  playerOffsetY = sprites.player:getHeight()/2
 
-  player = {}
-  player.x = 100
-  player.y = 100
-  player.speed = 250
+
+	player = {}
+		player.x = 100
+		player.y = 100
+		player.speed = 250
+		player.offsetX = sprites.player:getWidth()/2
+		player.offsetY = sprites.player:getHeight()/2-- offsets center pivot point
+		
+	zombieTracker = {}
 
 end
 
@@ -37,12 +39,29 @@ end
 function love.draw()
 	love.graphics.draw(sprites.background, 0, 0)
 	love.graphics.draw(sprites.bullet, 200, 100)
-	love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, playerOffsetX, playerOffsetY)--we use nil to ignore parameters we don't want to mess with
-	love.graphics.draw(sprites.zombie, 300, 100)
+	love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)--we use nil to ignore parameters we don't want to mess with
+	
+	for i, z in ipairs(zombieTracker) do -- this for loop draws every current zombie in zombieTracker
+		love.graphics.draw(sprites.zombie, z.x, z.y)-- z is the current zombie we are on
+	end
+	
 end
-
-
 
 function playerMouseAngleCalculation()
 	return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
+end
+
+function spawnZombie()
+	zombie = {}
+		zombie.x = math.random(0, love.graphics.getWidth())
+		zombie.y = math.random(0, love.graphics.getHeight())
+		zombie.speed = 100
+		
+		table.insert(zombieTracker, zombie)--adds this zombie table to the zombieTracker table in love.load()
+end
+
+function love.keypressed(key, scancode, isrepeat)
+	if key == "space" then
+		spawnZombie()
+	end
 end
