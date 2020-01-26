@@ -3,12 +3,29 @@ function love.load()
 	clockOriginX = 100
 	clockOriginY = 100
 	clockRadius = 100
+	clockMovementSpeed = 500
 end
 
 function love.update(dt)
+
 	--setting clock position and size data
-	SetClockTansform(200,200,100)--(xPos, yPos, Radius)
 	GetCurrentTimeData()
+	
+	if love.keyboard.isDown("s") then
+		clockOriginY = clockOriginY + clockMovementSpeed * dt
+	end
+
+	if love.keyboard.isDown("w") then
+		clockOriginY = clockOriginY - clockMovementSpeed * dt
+	end
+	
+	if love.keyboard.isDown("a") then
+		clockOriginX = clockOriginX - clockMovementSpeed * dt
+	end
+
+	if love.keyboard.isDown("d") then
+		clockOriginX = clockOriginX + clockMovementSpeed * dt
+	end
 	
 	--trigonometry
 	GetThetaAngles()
@@ -123,17 +140,19 @@ function drawDebugger()
     love.graphics.setNewFont(15)
     love.graphics.print("Debug Info:",debuggerX,debuggerY)
     love.graphics.setColor(1,1,1)
-    love.graphics.print("Current Date/Time: "..currentTime.fullTime,debuggerX,debuggerY + 50)
-    love.graphics.print("Current Hour: "..currentTime.hour,debuggerX,debuggerY + 100)
-    love.graphics.print("Current Minute: "..currentTime.minute,debuggerX,debuggerY + 150)
-    love.graphics.print("Current Second: "..currentTime.second,debuggerX,debuggerY + 200)
-    love.graphics.print("Theta Angle For Hour Hand: "..thetaAngleForHours,debuggerX,debuggerY + 250)
-    love.graphics.print("Theta Angle For Minute Hand: "..thetaAngleForMinutes,debuggerX,debuggerY + 300)
-    love.graphics.print("Theta Angle For Second Hand: "..thetaAngleForSeconds,debuggerX,debuggerY + 350)
-    love.graphics.print("Clock Radius: "..clockRadius,debuggerX,debuggerY + 400)
-    love.graphics.print("Terminal End Coordinate for Hour: ("..terminalEndHourX..", "..terminalEndHourY..")",debuggerX,debuggerY + 450)
-    love.graphics.print("Terminal End Coordinate for Minute: ("..terminalEndMinuteX..", "..terminalEndMinuteY..")",debuggerX,debuggerY + 500)
-    love.graphics.print("Terminal End Coordinate for Second: ("..terminalEndSecondX..", "..terminalEndSecondY..")",debuggerX,debuggerY + 550)
+    love.graphics.print("Current Date/Time: "..currentTime.fullTime,debuggerX,debuggerY + 25)
+    love.graphics.print("Current Hour: "..currentTime.hour,debuggerX,debuggerY + 50)
+    love.graphics.print("Current Minute: "..currentTime.minute,debuggerX,debuggerY + 75)
+    love.graphics.print("Current Second: "..currentTime.second,debuggerX,debuggerY + 100)
+    love.graphics.print("Theta Angle For Hour Hand: "..thetaAngleForHours,debuggerX,debuggerY + 125)
+    love.graphics.print("Theta Angle For Minute Hand: "..thetaAngleForMinutes,debuggerX,debuggerY + 150)
+    love.graphics.print("Theta Angle For Second Hand: "..thetaAngleForSeconds,debuggerX,debuggerY + 175)
+    love.graphics.print("Clock Radius: "..clockRadius,debuggerX,debuggerY + 200)
+    love.graphics.print("Terminal End Coordinate for Hour: ("..terminalEndHourX..", "..terminalEndHourY..")",debuggerX,debuggerY + 225)
+    love.graphics.print("Terminal End Coordinate for Minute: ("..terminalEndMinuteX..", "..terminalEndMinuteY..")",debuggerX,debuggerY + 250)
+    love.graphics.print("Terminal End Coordinate for Second: ("..terminalEndSecondX..", "..terminalEndSecondY..")",debuggerX,debuggerY + 275)
+    love.graphics.print("clockOriginX: "..clockOriginX,debuggerX,debuggerY + 300)
+    love.graphics.print("clockOriginY: "..clockOriginY,debuggerX,debuggerY + 325)
   end
 end
 
