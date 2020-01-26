@@ -2,6 +2,7 @@ function love.load()--this function is like the Start() function in C#
   clockOriginX = 100
   clockOriginY = 100
   clockRadius = 100
+  clockFont = love.graphics.newFont(20)
 end
 
 
@@ -41,33 +42,57 @@ function love.update(dt)--this function is like the Update() function in C#
     thetaAngleMinutes = thetaCalculation (currentTime.minute, 60)
     thetaAngleSeconds = thetaCalculation (currentTime.second, 60)
 
+
     --This function calculates the coordinate data for the terminal ends.
-    terminalEndSecondX = (math.sin(thetaAngleSeconds)*(clockRadius*0.25) + clockOriginX)
-    terminalEndSecondY = (math.cos(thetaAngleSeconds)*(clockRadius*0.25) + clockOriginY)
+    --Terminal End of second hand
+    terminalEndSecondX = (math.sin(thetaAngleSeconds)*(clockRadius*0.75) + clockOriginX)
+    terminalEndSecondY = (math.cos(thetaAngleSeconds)*(clockRadius*0.75) + clockOriginY)
 
-    terminalEndMinuteX = (math.sin(thetaAngleMinutes)*(clockRadius*0.75) + clockOriginX)
-    terminalEndMinuteY = (math.cos(thetaAngleMinutes)*(clockRadius*0.75) + clockOriginY)
+    --Terminal End of minute hand
+    terminalEndMinuteX = (math.sin(thetaAngleMinutes)*(clockRadius*0.60) + clockOriginX)
+    terminalEndMinuteY = (math.cos(thetaAngleMinutes)*(clockRadius*0.60) + clockOriginY)
 
-    terminalEndHourX = (math.sin(thetaAngleHours)*(clockRadius*0.5) + clockOriginX)
-    terminalEndHourY = (math.cos(thetaAngleHours)*(clockRadius*0.5) + clockOriginY)
+    --Terminal End of hour hand
+    terminalEndHourX = (math.sin(thetaAngleHours)*(clockRadius*0.3) + clockOriginX)
+    terminalEndHourY = (math.cos(thetaAngleHours)*(clockRadius*0.3) + clockOriginY)
 
 end
 
 
 function love.draw()
-    --clock outline
+    --clock outline and appearence
+    love.graphics.setColor(0.5,0.5,0.5)
+    love.graphics.circle("fill", clockOriginX, clockOriginY, clockRadius)
     love.graphics.setColor(1,1,1)
     love.graphics.circle("line", clockOriginX, clockOriginY, clockRadius)
+    love.graphics.circle("line", clockOriginX, clockOriginY, clockRadius)
+
+    --clock numbers
+    love.graphics.setColor(0,0,0)
+    love.graphics.setFont(clockFont)
+    love.graphics.print("3", (clockOriginX+(clockRadius*0.75)), clockOriginY - 7)
+
+    love.graphics.print("6", clockOriginX - 7, (clockOriginY+(clockRadius*0.75)))
+
+    love.graphics.print("9", (clockOriginX-(clockRadius*0.9)), clockOriginY - 8 )
+
+    love.graphics.print("12", clockOriginX - 11, (clockOriginY-(clockRadius*0.9)))
 
     --Coordinating each of the hands
     love.graphics.setColor(0,0,1)
     love.graphics.line(clockOriginX,clockOriginY, terminalEndSecondX,terminalEndSecondY)--blue line(seconds)
+    love.graphics.circle("fill", terminalEndSecondX, terminalEndSecondY, 3) --terminalEnd of Hour hand
+
 
     love.graphics.setColor(1,0,0)
     love.graphics.line(clockOriginX,clockOriginY, terminalEndMinuteX,terminalEndMinuteY)--red line (minutes)
+    love.graphics.circle("fill", terminalEndMinuteX, terminalEndMinuteY, 3) --terminalEnd of Hour hand
+
 
     love.graphics.setColor(0,1,0)
     love.graphics.line(clockOriginX,clockOriginY, terminalEndHourX,terminalEndHourY)--green line (hours)
+    love.graphics.circle("fill", terminalEndHourX, terminalEndHourY, 3) --terminalEnd of Hour hand
+
 
     --display clock data on-screen
     love.graphics.print(currentTime.fullTime,0,200)
