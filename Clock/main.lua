@@ -74,6 +74,7 @@ function love.draw()
 
     love.graphics.print("6", clockOriginX - 7, (clockOriginY+(clockRadius*0.75)))
 
+
     love.graphics.print("9", (clockOriginX-(clockRadius*0.9)), clockOriginY - 8 )
 
     love.graphics.print("12", clockOriginX - 11, (clockOriginY-(clockRadius*0.9)))
@@ -93,21 +94,37 @@ function love.draw()
     love.graphics.line(clockOriginX,clockOriginY, terminalEndHourX,terminalEndHourY)--green line (hours)
     love.graphics.circle("fill", terminalEndHourX, terminalEndHourY, 3) --terminalEnd of Hour hand
 
+    --circle in center of clock
+    love.graphics.setColor(0.1,0.1,0.1)
+    love.graphics.circle("fill", clockOriginX, clockOriginY, 5)
 
-    --display clock data on-screen
-    love.graphics.print(currentTime.fullTime,0,200)
-    love.graphics.print(currentTime.hour,0,225)
-    love.graphics.print(currentTime.minute,0,250)
-    love.graphics.print(currentTime.second,0,275)
-
-    love.graphics.print(thetaAngleHours,300,100)
-    love.graphics.print(thetaAngleMinutes,300,200)
-    love.graphics.print(thetaAngleSeconds,300,300)
-    love.graphics.print(clockRadius,300,400)
-    love.graphics.print(terminalEndSecondX,300,500)
-    love.graphics.print(terminalEndSecondY,300,550)
-
-
+    --Call debugger
+    debugger()
 
 end
 --this function is for drawing graphics on screen (at every frame)
+
+--debugger
+function debugger()
+  if love.keyboard.isDown("i") then
+    debuggerX = 250
+    debuggerY = 0
+    love.graphics.setColor(0,1,0)
+    love.graphics.setNewFont(15)
+    love.graphics.print("Debug Info:",debuggerX,debuggerY)
+    love.graphics.setColor(1,1,1)
+    love.graphics.print("Current Date/Time: "..currentTime.fullTime,debuggerX,debuggerY + 50)
+    love.graphics.print("Current Hour: "..currentTime.hour,debuggerX,debuggerY + 100)
+    love.graphics.print("Current Minute: "..currentTime.minute,debuggerX,debuggerY + 150)
+    love.graphics.print("Current Second: "..currentTime.second,debuggerX,debuggerY + 200)
+    love.graphics.print("Theta Angle For Hour Hand: "..thetaAngleHours,debuggerX,debuggerY + 250)
+    love.graphics.print("Theta Angle For Minute Hand: "..thetaAngleMinutes,debuggerX,debuggerY + 300)
+    love.graphics.print("Theta Angle For Second Hand: "..thetaAngleSeconds,debuggerX,debuggerY + 350)
+    love.graphics.print("Clock Radius: "..clockRadius,debuggerX,debuggerY + 400)
+    love.graphics.print("Terminal End Coordinate for Hour: ("..terminalEndHourX..", "..terminalEndHourY..")",debuggerX,debuggerY + 450)
+    love.graphics.print("Terminal End Coordinate for Minute: ("..terminalEndMinuteX..", "..terminalEndMinuteY..")",debuggerX,debuggerY + 500)
+    love.graphics.print("Terminal End Coordinate for Second: ("..terminalEndSecondX..", "..terminalEndSecondY..")",debuggerX,debuggerY + 550)
+
+
+  end
+end
