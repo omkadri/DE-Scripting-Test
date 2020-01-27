@@ -34,6 +34,13 @@ function love.update(dt)
 	if love.keyboard.isDown("d") then
 		player.x = player.x + player.speed * dt
 	end
+	
+		
+	--moves zombie towards player using trigonometry
+	for i,z in ipairs(zombieTracker) do
+		z.x = z.x + math.cos(zombiePlayerAngleCalculation(z)) * z.speed * dt
+		z.y = z.y + math.sin(zombiePlayerAngleCalculation(z)) * z.speed * dt
+	end
 end
 
 function love.draw()
@@ -42,7 +49,7 @@ function love.draw()
 	love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)--we use nil to ignore parameters we don't want to mess with
 	
 	for i, z in ipairs(zombieTracker) do -- this for loop draws every current zombie in zombieTracker
-		love.graphics.draw(sprites.zombie, z.x, z.y,ZombiePlayerAngleCalculation(z), nil,nil, zombie.offsetX, zombie.offsetY)-- z is the current zombie we are on
+		love.graphics.draw(sprites.zombie, z.x, z.y,zombiePlayerAngleCalculation(z), nil,nil, zombie.offsetX, zombie.offsetY)-- z is the current zombie we are on
 	end
 	
 end
@@ -51,7 +58,7 @@ function playerMouseAngleCalculation()
 	return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
 end
 
-function ZombiePlayerAngleCalculation(enemy)
+function zombiePlayerAngleCalculation(enemy)
 	return math.atan2(enemy.y - player.y, enemy.x - player.x) + math.pi
 end
 
