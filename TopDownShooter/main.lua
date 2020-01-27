@@ -56,14 +56,46 @@ function love.update(dt)
 		b.y = b.y + math.sin(b.direction) * b.speed * dt
 	end
 
+	--destroys bullets
 	for i=#bulletTracker,1,-1 do --#bulletTracker returns the total number of elements in bulletTracker	
 		local b = bulletTracker[i] --unlike the previous for loops, here we need to specify the value of b.
 		
+		--for off-screen bullets
 		if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getHeight() then
 			table.remove(bulletTracker, i) --removes any bullet in bulletTracker that meets the if condition
+		
+		--for bullets that hit zombies
+		elseif b.despawn == true then
+			table.remove(bulletTracker, i) 
+			--destroys any bullets that meet the conditions
+		end	
+		
+	end
+	
+	
+	--this implements collision between zombies and bullets
+	for i, z in ipairs(zombieTracker) do
+		for j, b in ipairs(bulletTracker) do --using j because i is taken
+			if distanceBetween(z.x,z.y,b.x,b.y)	<20 then
+				z.despawn = true
+				b.despawn = true
+				-- in another function, we destroy any bullets or zombies who's despawn = true
+			end	
 		end
 	end
+	
 
+	--this destroy zombies who have despawn = true
+	for i=#zombieTracker, 1, -1 do --examines every zombie in zombieTracker 
+		
+		local z = zombieTracker[i]
+		
+		if z.despawn == true then
+			table.remove(zombieTracker, i) 
+			--destroys any zombies that meet the conditions
+		end	
+	end
+	
 end
 
 function love.draw()
@@ -107,6 +139,7 @@ function spawnZombie()
 		zombie.speed = 100
 		zombie.offsetX = sprites.zombie:getWidth()/2
 		zombie.offsetY = sprites.zombie:getHeight()/2--center zombie pivot point
+		zombie.despawn = false
 		
 		table.insert(zombieTracker, zombie)--adds this zombie table to the zombieTracker table in love.load()
 end
@@ -119,6 +152,7 @@ function spawnBullet()
 		bullet.direction = playerMouseAngleCalculation()--this is conveninet, since we want the bullet going in the direction of the mouse
 		bullet.offsetX = sprites.bullet:getWidth()/2
 		bullet.offsetY = sprites.bullet:getHeight()/2--center bullet pivot point
+		bullet.despawn = false
 		
 		table.insert(bulletTracker, bullet)--adds this bullet table to the zombieTracker table in love.load()
 end
