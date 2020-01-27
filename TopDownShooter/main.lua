@@ -42,7 +42,7 @@ function love.draw()
 	love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)--we use nil to ignore parameters we don't want to mess with
 	
 	for i, z in ipairs(zombieTracker) do -- this for loop draws every current zombie in zombieTracker
-		love.graphics.draw(sprites.zombie, z.x, z.y)-- z is the current zombie we are on
+		love.graphics.draw(sprites.zombie, z.x, z.y,ZombiePlayerAngleCalculation(z), nil,nil, zombie.offsetX, zombie.offsetY)-- z is the current zombie we are on
 	end
 	
 end
@@ -51,11 +51,17 @@ function playerMouseAngleCalculation()
 	return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
 end
 
+function ZombiePlayerAngleCalculation(enemy)
+	return math.atan2(enemy.y - player.y, enemy.x - player.x) + math.pi
+end
+
 function spawnZombie()
 	zombie = {}
 		zombie.x = math.random(0, love.graphics.getWidth())
 		zombie.y = math.random(0, love.graphics.getHeight())
 		zombie.speed = 100
+		zombie.offsetX = sprites.zombie:getWidth()/2
+		zombie.offsetY = sprites.zombie:getHeight()/2--center zombie pivot point
 		
 		table.insert(zombieTracker, zombie)--adds this zombie table to the zombieTracker table in love.load()
 end
