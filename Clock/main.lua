@@ -1,41 +1,21 @@
 function love.load()
 	--initial clock transform data. This can be changed by using SetClockTansform()
-	clockOriginX = 100
-	clockOriginY = 100
-	clockRadius = 100
-	clockMovementSpeed = 500
+	enemyClock = {}
+		enemyClock.x = 100
+		enemyClock.y = 100
+		enemyClock.radius = 100
+		enemyClock.speed = 500
 end
 
 function love.update(dt)
-
-	--setting clock position and size data
-	GetCurrentTimeData()
-	
-	if love.keyboard.isDown("s") then
-		clockOriginY = clockOriginY + clockMovementSpeed * dt
-	end
-
-	if love.keyboard.isDown("w") then
-		clockOriginY = clockOriginY - clockMovementSpeed * dt
-	end
-	
-	if love.keyboard.isDown("a") then
-		clockOriginX = clockOriginX - clockMovementSpeed * dt
-	end
-
-	if love.keyboard.isDown("d") then
-		clockOriginX = clockOriginX + clockMovementSpeed * dt
-	end
-	
-	--trigonometry
-	GetThetaAngles()
-	GetTerminalEndCoordinates()
+	runTrigFunctions()
 end
 
 function love.draw()
 	drawClock()
     drawDebugger()
 end
+
 
 
 -- **FUNCTIONS**
@@ -51,9 +31,9 @@ function GetCurrentTimeData()
 end
 
 function SetClockTansform(x, y, size)
-	clockOriginX = x
-	clockOriginY = y
-	clockRadius = size
+	enemyClock.x = x
+	enemyClock.y = y
+	enemyClock.radius = size
 end
 
 
@@ -77,59 +57,71 @@ function GetTerminalEndCoordinates()
     --This function calculates the coordinate data for the terminal ends of each clock hand.
 
     --Terminal End of hour hand
-    terminalEndHourX = (math.sin(thetaAngleForHours)*(clockRadius*0.3) + clockOriginX)
-    terminalEndHourY = (math.cos(thetaAngleForHours)*(clockRadius*0.3) + clockOriginY)
+    terminalEndHourX = (math.sin(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.x)
+    terminalEndHourY = (math.cos(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.y)
 
     --Terminal End of minute hand
-    terminalEndMinuteX = (math.sin(thetaAngleForMinutes)*(clockRadius*0.60) + clockOriginX)
-    terminalEndMinuteY = (math.cos(thetaAngleForMinutes)*(clockRadius*0.60) + clockOriginY)
+    terminalEndMinuteX = (math.sin(thetaAngleForMinutes)*(enemyClock.radius*0.60) + enemyClock.x)
+    terminalEndMinuteY = (math.cos(thetaAngleForMinutes)*(enemyClock.radius*0.60) + enemyClock.y)
 	
 	--Terminal End of second hand
-    terminalEndSecondX = (math.sin(thetaAngleForSeconds)*(clockRadius*0.75) + clockOriginX)
-    terminalEndSecondY = (math.cos(thetaAngleForSeconds)*(clockRadius*0.75) + clockOriginY)
+    terminalEndSecondX = (math.sin(thetaAngleForSeconds)*(enemyClock.radius*0.75) + enemyClock.x)
+    terminalEndSecondY = (math.cos(thetaAngleForSeconds)*(enemyClock.radius*0.75) + enemyClock.y)
 end
 
-
+function runTrigFunctions()
+	--setting clock position and size data
+	GetCurrentTimeData()
+	--trigonometry
+	GetThetaAngles()
+	GetTerminalEndCoordinates()
+end
 --drawing
 function drawClock()
 
-	clockFont = love.graphics.newFont(clockRadius / 4, center)
+	--grab default color data
+	r, g, b, a = love.graphics.getColor( )
+	
+	--sets font to be proportionate
+	clockFont = love.graphics.newFont(enemyClock.radius / 4, center)
 
 	--clock outline and appearence
     love.graphics.setColor(0.5,0.5,0.5)
-    love.graphics.circle("fill", clockOriginX, clockOriginY, clockRadius)
+    love.graphics.circle("fill", enemyClock.x, enemyClock.y, enemyClock.radius)
     love.graphics.setColor(1,1,1)
-    love.graphics.circle("line", clockOriginX, clockOriginY, clockRadius)
-    love.graphics.circle("line", clockOriginX, clockOriginY, clockRadius)
+    love.graphics.circle("line", enemyClock.x, enemyClock.y, enemyClock.radius)
+    love.graphics.circle("line", enemyClock.x, enemyClock.y, enemyClock.radius)
 
 	--clock numbers
     love.graphics.setColor(0,0,0)
     love.graphics.setFont(clockFont)
-    love.graphics.print("3", (clockOriginX+(clockRadius*0.75)), clockOriginY - 7)
-    love.graphics.print("6", clockOriginX - 7, (clockOriginY+(clockRadius*0.75)))
-    love.graphics.print("9", (clockOriginX-(clockRadius*0.9)), clockOriginY - 8 )
-    love.graphics.print("12", clockOriginX - 11, (clockOriginY-(clockRadius*0.9)))
-
+    love.graphics.print("3", (enemyClock.x+(enemyClock.radius*0.75)), enemyClock.y - 7)
+    love.graphics.print("6", enemyClock.x - 7, (enemyClock.y+(enemyClock.radius*0.75)))
+    love.graphics.print("9", (enemyClock.x-(enemyClock.radius*0.9)), enemyClock.y - 8 )
+    love.graphics.print("12", enemyClock.x - 11, (enemyClock.y-(enemyClock.radius*0.9)))
 
     --Coordinating each of the hands
 		--Seconds Hand
     love.graphics.setColor(0,0,1)
-    love.graphics.line(clockOriginX,clockOriginY, terminalEndSecondX,terminalEndSecondY)--blue line(seconds)
+    love.graphics.line(enemyClock.x,enemyClock.y, terminalEndSecondX,terminalEndSecondY)--blue line(seconds)
     love.graphics.circle("fill", terminalEndSecondX, terminalEndSecondY, 3) --terminalEnd of Hour hand
 	
 		--Minute Hand
     love.graphics.setColor(1,0,0)
-    love.graphics.line(clockOriginX,clockOriginY, terminalEndMinuteX,terminalEndMinuteY)--red line (minutes)
+    love.graphics.line(enemyClock.x,enemyClock.y, terminalEndMinuteX,terminalEndMinuteY)--red line (minutes)
     love.graphics.circle("fill", terminalEndMinuteX, terminalEndMinuteY, 3) --terminalEnd of Hour hand
 
 		--Hour Hand
     love.graphics.setColor(0,1,0)
-    love.graphics.line(clockOriginX,clockOriginY, terminalEndHourX,terminalEndHourY)--green line (hours)
+    love.graphics.line(enemyClock.x,enemyClock.y, terminalEndHourX,terminalEndHourY)--green line (hours)
     love.graphics.circle("fill", terminalEndHourX, terminalEndHourY, 3) --terminalEnd of Hour hand
 
     --circle in center of clock
     love.graphics.setColor(0.1,0.1,0.1)
-    love.graphics.circle("fill", clockOriginX, clockOriginY, 5)
+    love.graphics.circle("fill", enemyClock.x, enemyClock.y, 5)
+	
+	--reset color data to default
+	love.graphics.setColor(r,g,b)
 end
 
 function drawDebugger()
@@ -147,12 +139,12 @@ function drawDebugger()
     love.graphics.print("Theta Angle For Hour Hand: "..thetaAngleForHours,debuggerX,debuggerY + 125)
     love.graphics.print("Theta Angle For Minute Hand: "..thetaAngleForMinutes,debuggerX,debuggerY + 150)
     love.graphics.print("Theta Angle For Second Hand: "..thetaAngleForSeconds,debuggerX,debuggerY + 175)
-    love.graphics.print("Clock Radius: "..clockRadius,debuggerX,debuggerY + 200)
+    love.graphics.print("Clock Radius: "..enemyClock.radius,debuggerX,debuggerY + 200)
     love.graphics.print("Terminal End Coordinate for Hour: ("..terminalEndHourX..", "..terminalEndHourY..")",debuggerX,debuggerY + 225)
     love.graphics.print("Terminal End Coordinate for Minute: ("..terminalEndMinuteX..", "..terminalEndMinuteY..")",debuggerX,debuggerY + 250)
     love.graphics.print("Terminal End Coordinate for Second: ("..terminalEndSecondX..", "..terminalEndSecondY..")",debuggerX,debuggerY + 275)
-    love.graphics.print("clockOriginX: "..clockOriginX,debuggerX,debuggerY + 300)
-    love.graphics.print("clockOriginY: "..clockOriginY,debuggerX,debuggerY + 325)
+    love.graphics.print("enemyClock.x: "..enemyClock.x,debuggerX,debuggerY + 300)
+    love.graphics.print("enemyClock.y: "..enemyClock.y,debuggerX,debuggerY + 325)
   end
 end
 
