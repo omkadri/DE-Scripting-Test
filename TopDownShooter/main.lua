@@ -5,8 +5,7 @@ function love.load()
 		sprites.zombie = love.graphics.newImage('sprites/zombie.png')
 		sprites.background = love.graphics.newImage('sprites/background.png')
   
-
-
+ 
 	player = {}
 		player.x = 100
 		player.y = 100
@@ -17,6 +16,10 @@ function love.load()
 	--we create tracker tables for objects that will have multiple spawning
 	zombieTracker = {}
 	bulletTracker = {}
+	
+	gameState = 2
+	maxTimeBetweenSpawn = 2
+	spawnTimer = maxTimeBetweenSpawn
 
 end
 
@@ -76,7 +79,7 @@ function love.update(dt)
 	--this implements collision between zombies and bullets
 	for i, z in ipairs(zombieTracker) do
 		for j, b in ipairs(bulletTracker) do --using j because i is taken
-			if distanceBetween(z.x,z.y,b.x,b.y)	<20 then
+			if distanceBetween(z.x,z.y,b.x,b.y)	<30 then
 				z.despawn = true
 				b.despawn = true
 				-- in another function, we destroy any bullets or zombies who's despawn = true
@@ -96,10 +99,19 @@ function love.update(dt)
 		end	
 	end
 	
+	if gameState == 2 then
+		spawnTimer = spawnTimer - dt
+		if spawnTimer <= 0 then
+			spawnZombie()
+			maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.97
+			spawnTimer = maxTimeBetweenSpawn
+		end
+	end
+
 end
 
 function love.draw()
-	--draws zombies
+	--draws background
 	love.graphics.draw(sprites.background, 0, 0)
 	
 	--draws player
@@ -167,7 +179,7 @@ function spawnBullet()
 		bullet = {}
 		bullet.x = player.x
 		bullet.y = player.y
-		bullet.speed = 1000
+		bullet.speed = 2000
 		bullet.direction = playerMouseAngleCalculation()--this is conveninet, since we want the bullet going in the direction of the mouse
 		bullet.offsetX = sprites.bullet:getWidth()/2
 		bullet.offsetY = sprites.bullet:getHeight()/2--center bullet pivot point
