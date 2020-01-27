@@ -40,6 +40,12 @@ function love.update(dt)
 	for i,z in ipairs(zombieTracker) do
 		z.x = z.x + math.cos(zombiePlayerAngleCalculation(z)) * z.speed * dt
 		z.y = z.y + math.sin(zombiePlayerAngleCalculation(z)) * z.speed * dt
+		
+		if distanceBetween(z.x, z.y, player.x, player.y) < 30 then
+			for i,z in ipairs(zombieTracker) do
+				zombieTracker[i] = nil
+			end
+		end
 	end
 end
 
@@ -60,6 +66,10 @@ end
 
 function zombiePlayerAngleCalculation(enemy)
 	return math.atan2(enemy.y - player.y, enemy.x - player.x) + math.pi
+end
+
+function distanceBetween(x1,y1,x2,y2)
+	return math.sqrt((y2 - y1)^2 + (x2 - x1)^2)
 end
 
 function spawnZombie()
