@@ -134,12 +134,31 @@ end
 
 function spawnZombie()
 	zombie = {}
-		zombie.x = math.random(0, love.graphics.getWidth())
-		zombie.y = math.random(0, love.graphics.getHeight())--ensures random spawning
+		zombie.x = 0
+		zombie.y = 0
 		zombie.speed = 100
 		zombie.offsetX = sprites.zombie:getWidth()/2
 		zombie.offsetY = sprites.zombie:getHeight()/2--center zombie pivot point
 		zombie.despawn = false
+		
+		local side = math.random(1,4)
+		
+		if side == 1 then--left side
+			zombie.x = -30
+			zombie.y = math.random(0,love.graphics.getHeight())
+			
+		elseif side == 2 then--bottom side
+			zombie.x = math.random(0, love.graphics.getWidth())
+			zombie.y = love.graphics.getHeight() + 30
+			
+		elseif side == 3 then--right side
+			zombie.x = love.graphics.getWidth()+30
+			zombie.y = math.random(0, love.graphics.getHeight())	
+			
+		elseif side == 4 then--top side
+			zombie.x = math.random(0, love.graphics.getWidth())
+			zombie.y = - 30		
+		end
 		
 		table.insert(zombieTracker, zombie)--adds this zombie table to the zombieTracker table in love.load()
 end
