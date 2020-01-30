@@ -1,6 +1,6 @@
 function love.load()
 	--instantiate physics
-	myWorld = love.physics.newWorld(0, 500) --gravity
+	myWorld = love.physics.newWorld(0, 500, false) --gravity: false just means physics will still apply even when it's not moving
 	myWorld:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	
 	sprites = {}
@@ -23,7 +23,7 @@ function love.update(dt)
 end
 
 function love.draw()
-	love.graphics.draw(sprites.player_stand, player.body:getX(), player.body:getY(), nil, nil, nil, sprites.player_stand:getWidth()/2, sprites.player_stand:getHeight()/2)
+	love.graphics.draw(player.sprite, player.body:getX(), player.body:getY(), nil, player.direction, 1, sprites.player_stand:getWidth()/2, sprites.player_stand:getHeight()/2)
 	
 	for i, p in ipairs(platformTracker) do
 		love.graphics.rectangle("fill", p.body:getX(), p.body:getY(), p.width, p.height)
@@ -49,7 +49,7 @@ function spawnPlatform(x, y, width, height)
 end
 
 function beginContact(a, b, call) --checks to see when a collision begins
-	player.grounded = true
+	player.grounded = true 
 end
 
 function endContact(a, b, call)  --checks to see when a collision ends
