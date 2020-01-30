@@ -16,8 +16,9 @@ function love.load()
 end
 
 function love.update(dt)
-	--
+	--ensures physics are updating every frame
 	myWorld:update(dt)--
+	playerUpdate(dt)
 end
 
 function love.draw()
