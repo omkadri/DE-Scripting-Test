@@ -1,6 +1,7 @@
 function love.load()
 	--instantiate physics
 	myWorld = love.physics.newWorld(0, 500) --gravity
+	myWorld:setCallbacks(beginContact, endContact, preSolve, postSolve)
 	
 	sprites = {}
 		sprites.coin_sheet = love.graphics.newImage('sprites/coin_sheet.png')
@@ -30,7 +31,7 @@ function love.draw()
 	
 	function love.keypressed (key, scancode, isrepeat)
 		--jumping with physics
-		if key == "up" then
+		if key == "up" and player.grounded == true then
 			player.body:applyLinearImpulse(0, -2500)
 		end
 	end
@@ -45,4 +46,12 @@ function spawnPlatform(x, y, width, height)
 		platform.height = height
 		
 		table.insert(platformTracker, platform)
+end
+
+function beginContact(a, b, call) --checks to see when a collision begins
+	player.grounded = true
+end
+
+function endContact(a, b, call)  --checks to see when a collision ends
+	player.grounded = false
 end
