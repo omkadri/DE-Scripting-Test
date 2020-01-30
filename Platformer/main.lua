@@ -1,12 +1,13 @@
 function love.load()
-
-	myWorld = love.physics.newWorld(0, 100)
+	--instantiate physics
+	myWorld = love.physics.newWorld(0, 500) --gravity
 	
 	sprites = {}
 		sprites.coin_sheet = love.graphics.newImage('sprites/coin_sheet.png')
 		sprites.player_jump = love.graphics.newImage('sprites/player_jump.png')
 		sprites.player_stand = love.graphics.newImage('sprites/player_stand.png')
 	
+	--runs player script
 	require ('player')
 	
 	platformTracker = {}
@@ -15,7 +16,8 @@ function love.load()
 end
 
 function love.update(dt)
-	myWorld:update(dt)
+	--
+	myWorld:update(dt)--
 end
 
 function love.draw()
@@ -23,6 +25,13 @@ function love.draw()
 	
 	for i, p in ipairs(platformTracker) do
 		love.graphics.rectangle("fill", p.body:getX(), p.body:getY(), p.width, p.height)
+	end
+	
+	function love.keypressed (key, scancode, isrepeat)
+		--jumping with physics
+		if key == "up" then
+			player.body:applyLinearImpulse(0, -2500)
+		end
 	end
 end
 
