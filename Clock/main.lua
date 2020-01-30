@@ -16,14 +16,7 @@ end
 
 
 --INITIALIZATION
-function GetCurrentTimeData()
-	--creating table for getting time data from OS
-    currentTime = {}
-		currentTime.fullTime = os.date()
-		currentTime.hour = os.date("%I") --based on 12 hour clock
-		currentTime.minute = os.date("%M")
-		currentTime.second = os.date("%S")
-end
+
 
 function SetClockTansform(x, y, size)
 	enemyClock = {}
@@ -53,9 +46,9 @@ end
 
 function GetThetaAngles()
 	
-	thetaAngleForHours = thetaAngleCalculator (currentTime.hour, 12)
-    thetaAngleForMinutes = thetaAngleCalculator (currentTime.minute, 60)
-    thetaAngleForSeconds = thetaAngleCalculator (currentTime.second, 60)
+	thetaAngleForHours = thetaAngleCalculator (os.date("%I"), 12)
+    thetaAngleForMinutes = thetaAngleCalculator (os.date("%M"), 60)
+    thetaAngleForSeconds = thetaAngleCalculator (os.date("%S"), 60)
 end
 
 function GetTerminalEndCoordinates()
@@ -79,8 +72,6 @@ end
 --DRAWING
 
 function drawClock()
-	
-	GetCurrentTimeData()
 	
 	--trigonometry
 	GetThetaAngles()
