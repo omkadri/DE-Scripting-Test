@@ -2,22 +2,19 @@ function love.load()
 end
 
 function love.update(dt)
-	SetClockTansform(500, 100, 150)
+	SetClockTansform (100, 100, 100)
 end
 
 function love.draw()
 	drawClock()
-    drawDebugger()
 end
-
 
 
 -- **FUNCTIONS**
 
 
+
 --INITIALIZATION
-
-
 function SetClockTansform(x, y, size)
 	enemyClock = {}
 		enemyClock.x = x
@@ -32,8 +29,6 @@ function SetClockTansform(x, y, size)
 end
 
 
-
-
 --TRIGONOMETRY
 function thetaAngleCalculator (currentTimeParameter, totalTimescale)
 	
@@ -41,19 +36,16 @@ function thetaAngleCalculator (currentTimeParameter, totalTimescale)
     --multiplying by (-1) makes the hand tick clockwise, and adding math.pi makes the hand start at the top
 
 	return theta
-    --example: to find the theta angle for the clock's minute hand, we would call thetaAngleCalculator (currentTime.minute, 60)
+    --example: to find the theta angle for the clock's minute hand, we would call thetaAngleCalculator (os.date("%M"), 60)
 end
 
-function GetThetaAngles()
+function getCoordinatesFromThetaAngles()
 	
 	thetaAngleForHours = thetaAngleCalculator (os.date("%I"), 12)
     thetaAngleForMinutes = thetaAngleCalculator (os.date("%M"), 60)
     thetaAngleForSeconds = thetaAngleCalculator (os.date("%S"), 60)
-end
-
-function GetTerminalEndCoordinates()
-    --This function calculates the coordinate data for the terminal ends of each clock hand.
-
+	
+	--These next lines calculate the XY coordinate data for the terminal ends of each clock hand.
     --Terminal End of hour hand
     enemyClock.hourHandX = (math.sin(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.x)
     enemyClock.hourHandY = (math.cos(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.y)
@@ -68,14 +60,12 @@ function GetTerminalEndCoordinates()
 end
 
 
-
 --DRAWING
-
 function drawClock()
 	
 	--trigonometry
-	GetThetaAngles()
-	GetTerminalEndCoordinates()
+	getCoordinatesFromThetaAngles()
+	
 	--grab default color data
 	r, g, b, a = love.graphics.getColor( )
 	
