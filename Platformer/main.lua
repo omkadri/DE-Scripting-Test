@@ -10,16 +10,24 @@ function love.load()
 	
 	--runs player script
 	require ('player')
+	anim8 = require ('anim8')
+	require ('coin')
 	
 	platformTracker = {}
 	
 	spawnPlatform(50,400,300,30)
+	spawnCoin(200, 100)
 end
 
 function love.update(dt)
 	--ensures physics are updating every frame
 	myWorld:update(dt)--
 	playerUpdate(dt)
+	
+	for i, c in ipairs(coinTracker) do
+		c.animation:update(dt)--this runs the animation cycle for every instance of the coin
+	end
+	
 end
 
 function love.draw()
@@ -35,6 +43,12 @@ function love.draw()
 			player.body:applyLinearImpulse(0, -2500)
 		end
 	end
+	
+	
+	for i, c in ipairs(coinTracker) do
+		c.animation:draw(sprites.coin_sheet, c.x, c.y)
+	end
+
 end
 
 function spawnPlatform(x, y, width, height)
