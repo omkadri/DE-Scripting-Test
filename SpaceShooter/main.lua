@@ -13,6 +13,10 @@ function love.load()
 		player.offsetX = sprites.player:getWidth()/2
 		player.offsetY = sprites.player:getHeight()/2-- offsets center pivot point
 	
+	--sound
+	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
+	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
+
 	--we create tracker tables for objects that will have multiple spawning
 	enemy1Tracker = {}
 	bulletTracker = {}
@@ -73,6 +77,7 @@ function love.update(dt)
 	for i, z in ipairs(enemy1Tracker) do
 		for j, b in ipairs(bulletTracker) do --using j because i is taken
 			if distanceBetween(z.x,z.y,b.x,b.y)	<30 then
+				deathSFX:play()
 				z.despawn = true
 				b.despawn = true
 				-- in another function, we destroy any bullets or enemy1s who's despawn = true
@@ -162,6 +167,9 @@ function spawnBullet()
 		bullet.offsetX = sprites.bullet:getWidth()/2
 		bullet.offsetY = sprites.bullet:getHeight()/2--center bullet pivot point
 		bullet.despawn = false
+		
+		bulletSFX:stop()--so we don't have to hear the whole sound before it plays again
+		bulletSFX:play()
 		
 		table.insert(bulletTracker, bullet)--adds this bullet table to the enemy1Tracker table in love.load()
 end
