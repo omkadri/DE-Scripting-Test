@@ -6,20 +6,15 @@ function love.load()
 		sprites.background = love.graphics.newImage('sprites/background.png')
   
  
-	player = {}
-		player.x = love.graphics.getWidth()/2
-		player.y = 550
-		player.speed = 250
-		player.offsetX = sprites.player:getWidth()/2
-		player.offsetY = sprites.player:getHeight()/2-- offsets center pivot point
-	
+
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
+	
+	require ('enemy1')
+	require ('bullet')
+	require ('player')
 
-	--we create tracker tables for objects that will have multiple spawning
-	enemy1Tracker = {}
-	bulletTracker = {}
 	
 	gameState = 2
 	maxTimeBetweenSpawn = 2
@@ -142,37 +137,9 @@ function distanceBetween(x1,y1,x2,y2)
 	return math.sqrt((y2 - y1)^2 + (x2 - x1)^2)
 end
 
-function spawnenemy1()
-	enemy1 = {}
-		enemy1.x = 0
-		enemy1.y = 0
-		enemy1.speed = 100
-		enemy1.offsetX = sprites.enemy1:getWidth()/2
-		enemy1.offsetY = sprites.enemy1:getHeight()/2--center enemy1 pivot point
-		enemy1.despawn = false
 
-		enemy1.x = math.random(0, love.graphics.getWidth())
-		enemy1.y = - 30		
-		
-		
-		table.insert(enemy1Tracker, enemy1)--adds this enemy1 table to the enemy1Tracker table in love.load()
-end
 
-function spawnBullet()
-		bullet = {}
-		bullet.x = player.x
-		bullet.y = player.y
-		bullet.speed = 2000
-		bullet.direction = playerMouseAngleCalculation()--this is conveninet, since we want the bullet going in the direction of the mouse
-		bullet.offsetX = sprites.bullet:getWidth()/2
-		bullet.offsetY = sprites.bullet:getHeight()/2--center bullet pivot point
-		bullet.despawn = false
-		
-		bulletSFX:stop()--so we don't have to hear the whole sound before it plays again
-		bulletSFX:play()
-		
-		table.insert(bulletTracker, bullet)--adds this bullet table to the enemy1Tracker table in love.load()
-end
+
 
 function love.keypressed(key, scancode, isrepeat)
 	if key == "space" then
