@@ -1,9 +1,13 @@
 function love.load()
+
+	love.mouse.setVisible(false)
+
 	sprites = {}
 		sprites.player = love.graphics.newImage('sprites/player.png')
 		sprites.bullet = love.graphics.newImage('sprites/bullet.png')
 		sprites.enemy1 = love.graphics.newImage('sprites/enemy1.png')
 		sprites.background = love.graphics.newImage('sprites/background.png')
+		sprites.reticle = love.graphics.newImage('sprites/reticle.png')
   
  
 
@@ -120,6 +124,9 @@ function love.draw()
 	for i,b in ipairs(bulletTracker) do
 		love.graphics.draw(sprites.bullet, b.x, b.y, nil, 0.5, 0.5,bullet.offsetX,bullet.offsetY)
 	end
+	
+	--draws reticle
+	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)
 end
 
 function playerMouseAngleCalculation()
