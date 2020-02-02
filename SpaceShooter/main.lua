@@ -1,50 +1,67 @@
 function love.load()
-
+	--removes mouse cursor
 	love.mouse.setVisible(false)
 
+	--sprite setup
 	sprites = {}
 		sprites.player = love.graphics.newImage('sprites/player.png')
 		sprites.bullet = love.graphics.newImage('sprites/bullet.png')
-		sprites.enemy1 = love.graphics.newImage('sprites/enemy1.png')
 		sprites.background = love.graphics.newImage('sprites/background.png')
 		sprites.reticle = love.graphics.newImage('sprites/reticle.png')
+		sprites.asteroid1 = love.graphics.newImage('sprites/asteroid1.png')
+		sprites.asteroid2 = love.graphics.newImage('sprites/asteroid2.png')
   
- 
-
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
 	
-	require ('enemy1')
+	--calling external scripts
+	require ('asteroid')
 	require ('bullet')
 	require ('player')
 
-	
+	--Game State Initialization
 	gameState = 2
 	maxTimeBetweenSpawn = 2
 	spawnTimer = maxTimeBetweenSpawn
+	backgroundScrollerY = 0
 
 end
 
 function love.update(dt)
-
+	--player movement
 	if love.keyboard.isDown("a") then
 		player.x = player.x - player.speed * dt
 	end
-
 	if love.keyboard.isDown("d") then
 		player.x = player.x + player.speed * dt
 	end
 	
-		
-	--moves enemy1 towards player using trigonometry
-	for i,z in ipairs(enemy1Tracker) do
-		z.x = z.x + math.cos(enemy1PlayerAngleCalculation(z)) * z.speed * dt
-		z.y = z.y + math.sin(enemy1PlayerAngleCalculation(z)) * z.speed * dt
+	--moves bigAsteroid towards player using trigonometry
+	for i,z in ipairs(bigAsteroidTracker) do
+		z.x = z.x + math.cos(enemyToPlayerAngleCalculation(z)) * z.speed * dt
+		z.y = z.y + math.sin(enemyToPlayerAngleCalculation(z)) * z.speed * dt
 		
 		if distanceBetween(z.x, z.y, player.x, player.y) < 30 then --this if condition also calls the function
-			for i,z in ipairs(enemy1Tracker) do
-				enemy1Tracker[i] = nil
+			for i,z in ipairs(bigAsteroidTracker) do
+				bigAsteroidTracker[i] = nil
+			end
+		end
+	end
+	
+	--moves smallAsteroid towards player using trigonometry
+	for i,z in ipairs(smallAsteroidTracker) do
+		if z.direction == 1 then
+			z.x = z.x + math.cos(enemyToPlayerAngleCalculation(z)) * z.speed * dt
+			z.y = z.y + math.sin(enemyToPlayerAngleCalculation(z)) * z.speed * dt
+		elseif z.direction == 2 then
+			z.x = z.x + math.cos(enemyToPlayerAngleCalculation(z)) * z.speed * -1 * dt  -- makes the 2nd asteroid move in another direction
+			z.y = z.y + math.sin(enemyToPlayerAngleCalculation(z)) * z.speed * dt
+		end
+		
+		if distanceBetween(z.x, z.y, player.x, player.y) < 30 then --this if condition also calls the function
+			for i,z in ipairs(smallAsteroidTracker) do
+				smallAsteroidTracker[i] = nil
 			end
 		end
 	end
@@ -63,7 +80,7 @@ function love.update(dt)
 		if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getHeight() then
 			table.remove(bulletTracker, i) --removes any bullet in bulletTracker that meets the if condition
 		
-		--for bullets that hit enemy1s
+		--for bullets that hit Asteroids
 		elseif b.despawn == true then
 			table.remove(bulletTracker, i) 
 			--destroys any bullets that meet the conditions
@@ -72,34 +89,66 @@ function love.update(dt)
 	end
 	
 	
-	--this implements collision between enemy1s and bullets
-	for i, z in ipairs(enemy1Tracker) do
+	--this implements collision between bigAsteroid and bullets
+	for i, z in ipairs(bigAsteroidTracker) do
+		for j, b in ipairs(bulletTracker) do --using j because i is taken
+			if distanceBetween(z.x,z.y,b.x,b.y)	<60 then
+				b.despawn = true
+				deathSFX:play()
+				z.despawn = true
+			end	
+		end
+	end
+	
+	
+	--this implements collision between smallAsteroid and bullets
+	for i, z in ipairs(smallAsteroidTracker) do
 		for j, b in ipairs(bulletTracker) do --using j because i is taken
 			if distanceBetween(z.x,z.y,b.x,b.y)	<30 then
 				deathSFX:play()
 				z.despawn = true
 				b.despawn = true
-				-- in another function, we destroy any bullets or enemy1s who's despawn = true
+				-- in another function, we destroy any bullets or bigAsteroids who's despawn = true
 			end	
 		end
 	end
 	
 
-	--this destroy enemy1s who have despawn = true
-	for i=#enemy1Tracker, 1, -1 do --examines every enemy1 in enemy1Tracker 
+	--destroy bigAsteroids
+	for i=#bigAsteroidTracker, 1, -1 do 
 		
-		local z = enemy1Tracker[i]
+		local z = bigAsteroidTracker[i]
 		
 		if z.despawn == true then
-			table.remove(enemy1Tracker, i) 
-			--destroys any enemy1s that meet the conditions
+		
+			--spawn small asteroids
+			spawnSmallAsteroid(z.x, z.y, 1) --exact same velocity as big asteroid 
+			spawnSmallAsteroid(z.x, z.y, 2) --inverse x velocity
+			
+			
+			table.remove(bigAsteroidTracker, i) 
+			--destroys any bigAsteroids that meet the conditions
 		end	
 	end
 	
+	
+	--this destroy smallAsteroids who have despawn = true
+	for i=#smallAsteroidTracker, 1, -1 do 
+		
+		local z = smallAsteroidTracker[i]
+		
+		if z.despawn == true then
+			table.remove(smallAsteroidTracker, i) 
+			--destroys any smallAsteroids that meet the conditions
+		end	
+	end
+
+
+	--Game State Parameters
 	if gameState == 2 then
 		spawnTimer = spawnTimer - dt
 		if spawnTimer <= 0 then
-			spawnenemy1()
+			spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30)
 			maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.97
 			spawnTimer = maxTimeBetweenSpawn
 		end
@@ -109,17 +158,21 @@ end
 
 function love.draw()
 	--draws background
-	love.graphics.draw(sprites.background, 0, 0)
+	love.graphics.draw(sprites.background, 0, 0, r, sx, sy, ox, backgroundScrollerY, kx, ky)
 	
 	--draws player
 	love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)--we use nil to ignore parameters we don't want to mess with
 	
-	--draws enemy1s
-	for i, z in ipairs(enemy1Tracker) do -- this for loop draws every current enemy1 in enemy1Tracker
-		love.graphics.draw(sprites.enemy1, z.x, z.y,enemy1PlayerAngleCalculation(z), nil,nil, enemy1.offsetX, enemy1.offsetY)-- z is the current enemy1 we are on
+	--draws bigAsteroids
+	for i, z in ipairs(bigAsteroidTracker) do
+		love.graphics.draw(sprites.asteroid1, z.x, z.y,enemyToPlayerAngleCalculation(z), nil,nil, bigAsteroid.offsetX, bigAsteroid.offsetY)-- z is the current bigAsteroid we are on
 	end
 	
-	
+	--draws smallAsteroids
+	for i, z in ipairs(smallAsteroidTracker) do
+		love.graphics.draw(sprites.asteroid2, z.x, z.y,enemyToPlayerAngleCalculation(z), nil,nil, bigAsteroid.offsetX, bigAsteroid.offsetY)-- z is the current bigAsteroid we are on
+	end
+		
 	--draws bullets
 	for i,b in ipairs(bulletTracker) do
 		love.graphics.draw(sprites.bullet, b.x, b.y, nil, 0.5, 0.5,bullet.offsetX,bullet.offsetY)
@@ -129,16 +182,26 @@ function love.draw()
 	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)
 end
 
+
+
+--**FUNCTIONS**
+
+
+--MATH 
+
+--finds theta angle between mouse and player (used for aiming)
 function playerMouseAngleCalculation()
 	-- uses trig to calculate the angle in which the player is facing the mouse
 	return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
 end
 
-function enemy1PlayerAngleCalculation(enemy)
-	--uses trig to calculate the angle in which the enemy1 is facing the player
+--finds theta angle between player and enemy of interest
+function enemyToPlayerAngleCalculation(enemy)
+	--uses trig to calculate the angle in which the bigAsteroid is facing the player
 	return math.atan2(enemy.y - player.y, enemy.x - player.x) + math.pi
 end
 
+--calculates distance between to coordinates (used for collision detection)
 function distanceBetween(x1,y1,x2,y2)
 	--can be used to find the distance between any formula.
 	return math.sqrt((y2 - y1)^2 + (x2 - x1)^2)
@@ -146,14 +209,9 @@ end
 
 
 
+--PLAYER INPUT
 
-
-function love.keypressed(key, scancode, isrepeat)
-	if key == "space" then
-		spawnenemy1()
-	end
-end
-
+--player shooting
 function love.mousepressed(x, y, b, istouch)
 	if b ==1 then
 		spawnBullet()
