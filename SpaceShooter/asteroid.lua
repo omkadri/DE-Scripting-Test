@@ -6,6 +6,7 @@ function spawnbigAsteroid(x, y)
 	bigAsteroid = {}
 		bigAsteroid.x = x
 		bigAsteroid.y = y
+		bigAsteroid.direction = 1
 		bigAsteroid.speed = 100
 		bigAsteroid.offsetX = sprites.asteroid1:getWidth()/2
 		bigAsteroid.offsetY = sprites.asteroid1:getHeight()/2--center bigAsteroid pivot point
