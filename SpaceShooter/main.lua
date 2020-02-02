@@ -36,6 +36,13 @@ function love.update(dt)
 	if love.keyboard.isDown("d") then
 		player.x = player.x + player.speed * dt
 	end
+	if player.x <=10 then
+		player.x = 11
+	end
+	if player.x >=love.graphics:getWidth()-10 then
+		player.x = love.graphics:getWidth() -11
+	end
+	
 	
 	--moves bigAsteroid towards player using trigonometry
 	for i,z in ipairs(bigAsteroidTracker) do
