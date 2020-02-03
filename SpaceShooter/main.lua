@@ -1,9 +1,4 @@
 function love.load()
-	
-	background1y = 0
-	background2y = -2690
-	backgroundScrollingSpeed = 100
-	
 	--removes mouse cursor
 	love.mouse.setVisible(false)
 
@@ -24,42 +19,20 @@ function love.load()
 	require ('asteroid')
 	require ('bullet')
 	require ('player')
+	require ('scrollingBackground')
 
 	--Game State Initialization
 	gameState = 2
 	maxTimeBetweenSpawn = 2
 	spawnTimer = maxTimeBetweenSpawn
-	backgroundScrollerY = 0
 
 end
 
 function love.update(dt)
-	--player movement
-	if love.keyboard.isDown("a") then
-		player.x = player.x - player.speed * dt
-	end
-	if love.keyboard.isDown("d") then
-		player.x = player.x + player.speed * dt
-	end
-	if player.x <=10 then
-		player.x = 11
-	end
-	if player.x >=love.graphics:getWidth()-10 then
-		player.x = love.graphics:getWidth() -11
-	end
 	
-	
-	--scrolling background
-	background1y = background1y + backgroundScrollingSpeed * dt
-	background2y = background2y + backgroundScrollingSpeed * dt
-	
-	if background1y >= 2690 then
-		background1y = 0
-	end
-	
-	if background2y >= 0 then
-		background2y = -2690
-	end
+	playerUpdate()
+	scrollingBackgroundUpdate()
+	bulletUpdate()
 	
 	
 	--moves bigAsteroid towards player using trigonometry
@@ -102,28 +75,7 @@ function love.update(dt)
 		end
 	end
 
-	--makes bullet move
-	for i, b in ipairs(bulletTracker) do
-		b.x = b.x + math.cos(b.direction) * b.speed * dt
-		b.y = b.y + math.sin(b.direction) * b.speed * dt
-	end
 
-	--destroys bullets
-	for i=#bulletTracker,1,-1 do --#bulletTracker returns the total number of elements in bulletTracker	
-		local b = bulletTracker[i] --unlike the previous for loops, here we need to specify the value of b.
-		
-		--for off-screen bullets
-		if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getHeight() then
-			table.remove(bulletTracker, i) --removes any bullet in bulletTracker that meets the if condition
-		
-		--for bullets that hit Asteroids
-		elseif b.despawn == true then
-			table.remove(bulletTracker, i) 
-			--destroys any bullets that meet the conditions
-		end	
-		
-	end
-	
 	
 	--this implements collision between bigAsteroid and bullets
 	for i, z in ipairs(bigAsteroidTracker) do
@@ -193,12 +145,10 @@ function love.update(dt)
 end
 
 function love.draw()
-	--draws background
-	love.graphics.draw(sprites.background, 0, background1y, r, sx, sy, ox, backgroundScrollerY, kx, ky)
-	love.graphics.draw(sprites.background, 0, background2y, r, sx, sy, ox, backgroundScrollerY, kx, ky)
-	
-	--draws player
-	love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)--we use nil to ignore parameters we don't want to mess with
+
+	drawScrollingBackground()
+	drawPlayer()
+	drawBullet()
 	
 	--draws bigAsteroids
 	for i, z in ipairs(bigAsteroidTracker) do
@@ -211,9 +161,7 @@ function love.draw()
 	end
 		
 	--draws bullets
-	for i,b in ipairs(bulletTracker) do
-		love.graphics.draw(sprites.bullet, b.x, b.y, nil, 0.5, 0.5,bullet.offsetX,bullet.offsetY)
-	end
+
 	
 	--draws reticle
 	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)
@@ -249,8 +197,3 @@ end
 --PLAYER INPUT
 
 --player shooting
-function love.mousepressed(x, y, b, istouch)
-	if b ==1 then
-		spawnBullet()
-	end
-end
