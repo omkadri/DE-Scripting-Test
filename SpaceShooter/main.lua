@@ -1,4 +1,9 @@
 function love.load()
+	
+	background1y = 0
+	background2y = -2690
+	backgroundScrollingSpeed = 100
+	
 	--removes mouse cursor
 	love.mouse.setVisible(false)
 
@@ -41,6 +46,19 @@ function love.update(dt)
 	end
 	if player.x >=love.graphics:getWidth()-10 then
 		player.x = love.graphics:getWidth() -11
+	end
+	
+	
+	--scrolling background
+	background1y = background1y + backgroundScrollingSpeed * dt
+	background2y = background2y + backgroundScrollingSpeed * dt
+	
+	if background1y >= 2690 then
+		background1y = 0
+	end
+	
+	if background2y >= 0 then
+		background2y = -2690
 	end
 	
 	
@@ -176,7 +194,8 @@ end
 
 function love.draw()
 	--draws background
-	love.graphics.draw(sprites.background, 0, 0, r, sx, sy, ox, backgroundScrollerY, kx, ky)
+	love.graphics.draw(sprites.background, 0, background1y, r, sx, sy, ox, backgroundScrollerY, kx, ky)
+	love.graphics.draw(sprites.background, 0, background2y, r, sx, sy, ox, backgroundScrollerY, kx, ky)
 	
 	--draws player
 	love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)--we use nil to ignore parameters we don't want to mess with
