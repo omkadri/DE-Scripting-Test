@@ -1,4 +1,5 @@
 multishotActivate = true
+multishotTimer = 10
 
 multishotTracker = {}
 
@@ -42,8 +43,15 @@ function multishotUpdate()
 		elseif b.despawn == true then
 			table.remove(multishotTracker, i) 
 			--destroys any multishots that meet the conditions
+			
 		end	
 		
+	end
+	
+	multishotTimer = multishotTimer - dt
+	
+	if multishotTimer <= 0 then
+		multishotActivate = false
 	end
 end
 

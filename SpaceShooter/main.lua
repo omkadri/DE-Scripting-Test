@@ -10,6 +10,7 @@ function love.load()
 		sprites.reticle = love.graphics.newImage('sprites/reticle.png')
 		sprites.asteroid1 = love.graphics.newImage('sprites/asteroid1.png')
 		sprites.asteroid2 = love.graphics.newImage('sprites/asteroid2.png')
+		sprites.multishot = love.graphics.newImage('sprites/multishot.png')
   
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
@@ -21,6 +22,7 @@ function love.load()
 	require ('bullet')
 	require ('player')
 	require ('scrollingBackground')
+	require ('powerUp')
 	
 
 	--Game State Initialization
@@ -36,12 +38,14 @@ function love.update(dt)
 	bulletUpdate()
 	multishotUpdate()
 	asteroidUpdate()
+	powerUpUpdate()
 
 	--Game State Parameters
 	if gameState == 2 then
 		spawnTimer = spawnTimer - dt
 		if spawnTimer <= 0 then
 			spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30)
+			spawnPowerUp(math.random(0, love.graphics:getWidth()), -30)
 			maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.97
 			spawnTimer = maxTimeBetweenSpawn
 		end
@@ -55,6 +59,7 @@ function love.draw()
 	drawBullet()
 	drawmultishot()
 	drawAsteroid()
+	powerUpDraw()
 	
 	--draws reticle
 	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)
