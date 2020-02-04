@@ -17,9 +17,11 @@ function love.load()
 	
 	--calling external scripts
 	require ('asteroid')
+	require ('multishot')
 	require ('bullet')
 	require ('player')
 	require ('scrollingBackground')
+	
 
 	--Game State Initialization
 	gameState = 2
@@ -32,6 +34,7 @@ function love.update(dt)
 	playerUpdate()
 	scrollingBackgroundUpdate()
 	bulletUpdate()
+	multishotUpdate()
 	asteroidUpdate()
 
 	--Game State Parameters
@@ -50,11 +53,44 @@ function love.draw()
 	drawScrollingBackground()
 	drawPlayer()
 	drawBullet()
+	drawmultishot()
 	drawAsteroid()
 	
 	--draws reticle
 	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

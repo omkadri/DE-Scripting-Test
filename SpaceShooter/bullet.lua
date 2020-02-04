@@ -48,7 +48,10 @@ function drawBullet()
 end
 
 function love.mousepressed(x, y, b, istouch)
-	if b ==1 then
+	if b ==1 and multishotActivate == true then
+		spawnBullet()
+		spawnmultishot()
+	else
 		spawnBullet()
 	end
 end
