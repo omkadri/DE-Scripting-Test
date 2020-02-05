@@ -42,6 +42,7 @@ function love.update(dt)
 	asteroidUpdate()
 	powerUpUpdate()
 	cooldownUpdate()
+	healthUpdate()
 
 	--Game State Parameters
 	if gameState == 2 then
@@ -61,11 +62,10 @@ function love.draw()
 	powerUpDraw()
 	drawPlayer()
 	drawBullet()
-	drawmultishot()
 	drawAsteroid()
+	drawmultishot()
 	drawCooldown()
 	drawHealth()
-	
 
 	
 	--draws reticle

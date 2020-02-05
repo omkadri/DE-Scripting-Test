@@ -35,8 +35,17 @@ function asteroidUpdate()
 		z.x = z.x + math.cos(enemyToPlayerAngleCalculation(z)) * z.speed * z.direction * dt
 		z.y = z.y + math.sin(enemyToPlayerAngleCalculation(z)) * z.speed * dt
 		
+		if distanceBetween(z.x, z.y, player.x, player.y) < 30 then --this if condition also calls the function
+			for i,z in ipairs(bigAsteroidTracker) do
+					if invulnerability == false then
+						invulnerability = true
+						healthLength = healthLength - 25
+						invulnerabilityTimer = 2
+					end
+				smallAsteroidTracker[i] = nil
+			end
+		end
 		--stops asteroids from leaving screen
-
 	end
 	
 	--moves smallAsteroid towards player using trigonometry
@@ -54,9 +63,14 @@ function asteroidUpdate()
 			z.direction = z.direction * -1
 		end
 		
-		
+		--collision with player
 		if distanceBetween(z.x, z.y, player.x, player.y) < 30 then --this if condition also calls the function
 			for i,z in ipairs(smallAsteroidTracker) do
+				if invulnerability == false then
+						invulnerability = true
+						healthLength = healthLength - 25
+						invulnerabilityTimer = 2
+					end
 				smallAsteroidTracker[i] = nil
 			end
 		end
@@ -152,11 +166,11 @@ end
 function drawAsteroid()
 	--draws bigAsteroids
 	for i, z in ipairs(bigAsteroidTracker) do
-		love.graphics.draw(sprites.asteroid1, z.x, z.y,enemyToPlayerAngleCalculation(z), nil,nil, bigAsteroid.offsetX, bigAsteroid.offsetY)-- z is the current bigAsteroid we are on
+		love.graphics.draw(sprites.asteroid1, z.x, z.y,nil, nil,nil, bigAsteroid.offsetX, bigAsteroid.offsetY)-- z is the current bigAsteroid we are on
 	end
 	
 	--draws smallAsteroids
 	for i, z in ipairs(smallAsteroidTracker) do
-		love.graphics.draw(sprites.asteroid2, z.x, z.y,enemyToPlayerAngleCalculation(z), nil,nil, smallAsteroid.offsetX, smallAsteroid.offsetY)-- z is the current bigAsteroid we are on
+		love.graphics.draw(sprites.asteroid2, z.x, z.y,nil, nil,nil, smallAsteroid.offsetX, smallAsteroid.offsetY)-- z is the current bigAsteroid we are on
 	end
 end
