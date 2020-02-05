@@ -17,6 +17,9 @@ function love.load()
 		sprites.damage1 = love.graphics.newImage('sprites/damage1.png')
 		sprites.damage2 = love.graphics.newImage('sprites/damage2.png')
 		sprites.damage3 = love.graphics.newImage('sprites/damage3.png')
+	
+	success = love.window.setMode( 750, 900)
+
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
@@ -62,8 +65,8 @@ end
 function love.draw()
 	drawScrollingBackground()
 	powerUpDraw()
-	drawPlayer()
 	drawBullet()
+	drawPlayer()
 	drawAsteroid()
 	drawmultishot()
 	drawCooldown()
