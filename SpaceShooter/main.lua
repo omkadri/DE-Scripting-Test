@@ -11,6 +11,9 @@ function love.load()
 		sprites.asteroid1 = love.graphics.newImage('sprites/asteroid1.png')
 		sprites.asteroid2 = love.graphics.newImage('sprites/asteroid2.png')
 		sprites.multishot = love.graphics.newImage('sprites/multishot.png')
+		sprites.shieldIcon = love.graphics.newImage('sprites/shieldIcon.png')
+		sprites.shieldEffect = love.graphics.newImage('sprites/shieldEffect.png')
+		sprites.health = love.graphics.newImage('sprites/health.png')
   
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
@@ -23,12 +26,12 @@ function love.load()
 	require ('bullet')
 	require ('player')
 	require ('scrollingBackground')
-	require ('powerUp')
 	require ('health')
+	require ('powerUp')
+	
 	
 
 	--Game State Initialization
-	gameState = 2
 	maxTimeBetweenSpawn = 2
 	spawnTimer = maxTimeBetweenSpawn
 
@@ -44,15 +47,12 @@ function love.update(dt)
 	cooldownUpdate()
 	healthUpdate()
 
-	--Game State Parameters
-	if gameState == 2 then
-		spawnTimer = spawnTimer - dt
-		if spawnTimer <= 0 then
-			spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30)
-			spawnPowerUp(math.random(0, love.graphics:getWidth()), -30)
-			maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.97
-			spawnTimer = maxTimeBetweenSpawn
-		end
+	spawnTimer = spawnTimer - dt
+	if spawnTimer <= 0 then
+		spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30)
+		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,3))
+		maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.999
+		spawnTimer = maxTimeBetweenSpawn
 	end
 
 end

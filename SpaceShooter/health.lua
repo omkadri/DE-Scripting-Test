@@ -14,6 +14,10 @@ function healthUpdate()
 		invulnerability = false
 	end
 	
+	if healthLength >=200 then
+		healthLength = 200
+	end
+	
 
 end
 
@@ -22,5 +26,10 @@ function drawHealth()
 		love.graphics.setColor(0,1,0)
 		love.graphics.rectangle( "fill", 10, 10, healthLength, 15 )
 		love.graphics.setColor(255, 255, 255)
+		
+		--draws forcefield around player when invulnerable
+		if invulnerability == true then
+			love.graphics.draw(sprites.shieldEffect, player.x, player.y, nil, 0.5, 0.5,sprites.shieldEffect:getWidth()/2,sprites.shieldEffect:getHeight()/2)
+		end
 	end
 end

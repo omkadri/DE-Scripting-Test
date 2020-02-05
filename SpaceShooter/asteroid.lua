@@ -39,8 +39,8 @@ function asteroidUpdate()
 			for i,z in ipairs(bigAsteroidTracker) do
 					if invulnerability == false then
 						invulnerability = true
-						healthLength = healthLength - 25
-						invulnerabilityTimer = 2
+						healthLength = healthLength - 50
+						invulnerabilityTimer = 1
 					end
 				smallAsteroidTracker[i] = nil
 			end
@@ -68,8 +68,8 @@ function asteroidUpdate()
 			for i,z in ipairs(smallAsteroidTracker) do
 				if invulnerability == false then
 						invulnerability = true
-						healthLength = healthLength - 25
-						invulnerabilityTimer = 2
+						healthLength = healthLength - 50
+						invulnerabilityTimer = 1
 					end
 				smallAsteroidTracker[i] = nil
 			end

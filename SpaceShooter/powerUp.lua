@@ -1,10 +1,10 @@
 powerUpTracker = {}
 
-function spawnPowerUp(x, y)
+function spawnPowerUp(x, y, flavor)
 powerUp = {}
 	powerUp.x = x
 	powerUp.y = y
-	powerUp.type = 1
+	powerUp.flavor = flavor
 	powerUp.offsetX = sprites.multishot:getWidth()/2
 	powerUp.offsetY = sprites.multishot:getHeight()/2
 	
@@ -20,8 +20,15 @@ function powerUpUpdate()
 	for i, p in ipairs(powerUpTracker) do
 		p.y = p.y + 100 * dt
 		if distanceBetween(player.x,player.y,p.x,p.y) < 60 then
-			multishotActivate = true
-			multishotTimer = 10
+			if p.flavor == 1 then
+				multishotActivate = true
+				multishotTimer = 10
+			elseif p.flavor == 2 then
+				healthLength = healthLength + 100
+			elseif p.flavor == 3 then
+				invulnerability = true
+				invulnerabilityTimer = 10
+			end
 			deathSFX:play()
 			p.despawn = true
 		end
@@ -41,20 +48,17 @@ function powerUpUpdate()
 end
 
 function powerUpDraw()
-	for i,p in ipairs(powerUpTracker) do
-		love.graphics.draw(sprites.multishot, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
-	end
-end
-
-
--- 
-
--- colllsion with player
-	-- set multishot to true
-	-- set multishot timer to 10
-
--- draw
-	-- 
 	
+	for i,p in ipairs(powerUpTracker) do
+		if p.flavor == 1 then
+			love.graphics.draw(sprites.multishot, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
+		elseif p.flavor == 2 then
+			love.graphics.draw(sprites.health, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
+		elseif p.flavor == 3 then
+			love.graphics.draw(sprites.shieldIcon, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
+		end
+	end
+	
+end
 	
 	
