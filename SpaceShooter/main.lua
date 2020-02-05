@@ -14,7 +14,9 @@ function love.load()
 		sprites.shieldIcon = love.graphics.newImage('sprites/shieldIcon.png')
 		sprites.shieldEffect = love.graphics.newImage('sprites/shieldEffect.png')
 		sprites.health = love.graphics.newImage('sprites/health.png')
-  
+		sprites.damage1 = love.graphics.newImage('sprites/damage1.png')
+		sprites.damage2 = love.graphics.newImage('sprites/damage2.png')
+		sprites.damage3 = love.graphics.newImage('sprites/damage3.png')
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")

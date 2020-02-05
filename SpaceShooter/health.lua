@@ -22,6 +22,7 @@ function healthUpdate()
 end
 
 function drawHealth()
+	
 	if healthLength >0 then
 		love.graphics.setColor(0,1,0)
 		love.graphics.rectangle( "fill", 10, 10, healthLength, 15 )
@@ -31,5 +32,15 @@ function drawHealth()
 		if invulnerability == true then
 			love.graphics.draw(sprites.shieldEffect, player.x, player.y, nil, 0.5, 0.5,sprites.shieldEffect:getWidth()/2,sprites.shieldEffect:getHeight()/2)
 		end
+	end
+		
+	if healthLength ==150 then
+		love.graphics.draw(sprites.damage1, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)
+	end
+	if healthLength ==100 then
+		love.graphics.draw(sprites.damage2, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)
+	end
+	if healthLength ==50 then
+		love.graphics.draw(sprites.damage3, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)
 	end
 end
