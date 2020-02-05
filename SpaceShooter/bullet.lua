@@ -1,3 +1,5 @@
+dt = love.timer.getDelta()
+
 bulletTracker = {}
 
 function spawnBullet()
@@ -18,7 +20,6 @@ end
 
 function bulletUpdate()
 	--makes bullet move
-	dt = love.timer.getDelta()
 	for i, b in ipairs(bulletTracker) do
 		b.x = b.x + math.cos(b.direction) * b.speed * dt
 		b.y = b.y + math.sin(b.direction) * b.speed * dt
@@ -39,6 +40,7 @@ function bulletUpdate()
 		end	
 		
 	end
+	
 end
 
 function drawBullet()
@@ -47,11 +49,4 @@ function drawBullet()
 	end
 end
 
-function love.mousepressed(x, y, b, istouch)
-	if b ==1 and multishotActivate == true then
-		spawnBullet()
-		spawnmultishot()
-	else
-		spawnBullet()
-	end
-end
+

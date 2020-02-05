@@ -19,10 +19,12 @@ function love.load()
 	--calling external scripts
 	require ('asteroid')
 	require ('multishot')
+	require ('cooldown')
 	require ('bullet')
 	require ('player')
 	require ('scrollingBackground')
 	require ('powerUp')
+	require ('health')
 	
 
 	--Game State Initialization
@@ -39,6 +41,7 @@ function love.update(dt)
 	multishotUpdate()
 	asteroidUpdate()
 	powerUpUpdate()
+	cooldownUpdate()
 
 	--Game State Parameters
 	if gameState == 2 then
@@ -60,6 +63,9 @@ function love.draw()
 	drawBullet()
 	drawmultishot()
 	drawAsteroid()
+	drawCooldown()
+	drawHealth()
+	
 
 	
 	--draws reticle
