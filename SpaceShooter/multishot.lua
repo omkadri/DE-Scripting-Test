@@ -1,5 +1,5 @@
-multishotActivate = true
-multishotTimer = 10
+multishotActivate = false
+multishotTimer = 0
 
 multishotTracker = {}
 
@@ -48,7 +48,9 @@ function multishotUpdate()
 		
 	end
 	
-	multishotTimer = multishotTimer - dt
+	if multishotTimer >0 then
+		multishotTimer = multishotTimer - dt
+	end
 	
 	if multishotTimer <= 0 then
 		multishotActivate = false
@@ -59,6 +61,10 @@ function drawmultishot()
 	for i,b in ipairs(multishotTracker) do
 		love.graphics.draw(sprites.bullet, b.x, b.y, nil, 0.5, 0.5,multishot.offsetX,multishot.offsetY)
 		love.graphics.draw(sprites.bullet, b.x2, b.y2, nil, 0.5, 0.5,multishot.offsetX,multishot.offsetY)
+	end
+	
+	if multishotActivate == true then
+		love.graphics.print("Multishot: "..math.ceil(multishotTimer), 10, 10)
 	end
 end
 

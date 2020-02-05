@@ -55,11 +55,12 @@ end
 
 function love.draw()
 	drawScrollingBackground()
+	powerUpDraw()
 	drawPlayer()
 	drawBullet()
 	drawmultishot()
 	drawAsteroid()
-	powerUpDraw()
+
 	
 	--draws reticle
 	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)
