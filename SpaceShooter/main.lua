@@ -25,10 +25,10 @@ function love.load()
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
 	
 	--calling external scripts
+	require ('bullet')
 	require ('asteroid')
 	require ('multishot')
 	require ('cooldown')
-	require ('bullet')
 	require ('player')
 	require ('scrollingBackground')
 	require ('health')

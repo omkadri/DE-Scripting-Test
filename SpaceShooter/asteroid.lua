@@ -33,30 +33,60 @@ function spawnSmallAsteroid(x, y, vx, vy)
 end
 
 function asteroidUpdate()
-	--moves bigAsteroid towards player
+	
 	for i,z in ipairs(bigAsteroidTracker) do
+		--moves bigAsteroid towards player
 		z.x = z.x + z.vectorX * z.speed * z.direction * dt
 		z.y = z.y + z.vectorY * z.speed * dt
+		
 		
 		--stops asteroids from leaving screen
 		if z.x <= 0 or z.x >= love.graphics:getWidth() then
 			z.direction = z.direction * -1
 		end
 		
-		if distanceBetween(z.x, z.y, player.x, player.y) < 70 then --this if condition also calls the function
-			for i,z in ipairs(bigAsteroidTracker) do
-					if invulnerability == false then
-						invulnerability = true
-						healthLength = healthLength - 50
-						invulnerabilityTimer = 1
-					end
-				smallAsteroidTracker[i] = nil
-			end
+		--collision with player
+		if distanceBetween(z.x, z.y, player.x, player.y) < 70 and invulnerability == false then
+			invulnerability = true
+			healthLength = healthLength - 50
+			invulnerabilityTimer = 1
+			table.remove(bigAsteroidTracker, i) 
 		end
-		--stops asteroids from leaving screen
+		
+		--collision with bullet
+		for j, b in ipairs(bulletTracker) do --using j because i is taken
+			if distanceBetween(z.x,z.y,b.x,b.y)	<60 then
+				deathSFX:play()
+				spawnSmallAsteroid(z.x, z.y, z.vectorX, z.vectorY) --exact same velocity as big asteroid 
+				spawnSmallAsteroid(z.x, z.y, (z.vectorX*-1), z.vectorY) --inverse x velocity
+				table.remove(bigAsteroidTracker, i)
+				table.remove(bulletTracker, j) 
+			end	
 		end
+
+		
+		--collision with multishot
+		for j, b in ipairs(multishotTracker) do --using j because i is taken
+			if distanceBetween(z.x,z.y,b.x,b.y) < 60 then
+				deathSFX:play()
+				spawnSmallAsteroid(z.x, z.y, z.vectorX, z.vectorY) --exact same velocity as big asteroid 
+				spawnSmallAsteroid(z.x, z.y, (z.vectorX*-1), z.vectorY) --inverse x velocity
+				table.remove(bigAsteroidTracker, i) 
+				table.remove(bulletTracker, j) 
+			end	
+			if distanceBetween(z.x,z.y,b.x2,b.y2) < 60 then
+				deathSFX:play()
+				spawnSmallAsteroid(z.x, z.y, z.vectorX, z.vectorY) --exact same velocity as big asteroid 
+				spawnSmallAsteroid(z.x, z.y, (z.vectorX*-1), z.vectorY) --inverse x velocity
+				table.remove(bigAsteroidTracker, i) 
+				table.remove(bulletTracker, j) 
+			end	
+		end	
+		
+	end
 	
-	--moves smallAsteroid towards player
+
+		--moves smallAsteroid towards player
 	for i,z in ipairs(smallAsteroidTracker) do
 		z.x = z.x + z.vectorX * z.speed * dt
 		z.y = z.y + z.vectorY * z.speed * dt
@@ -79,34 +109,6 @@ function asteroidUpdate()
 		end
 	end
 
-
-	--this implements collision between bigAsteroid and bullets
-	for i, z in ipairs(bigAsteroidTracker) do
-		for j, b in ipairs(bulletTracker) do --using j because i is taken
-			if distanceBetween(z.x,z.y,b.x,b.y)	<60 then
-				b.despawn = true
-				deathSFX:play()
-				z.despawn = true
-			end	
-		end
-	end
-	
-		--this implements collision between bigAsteroid and multishot
-	for i, z in ipairs(bigAsteroidTracker) do
-		for j, b in ipairs(multishotTracker) do --using j because i is taken
-			if distanceBetween(z.x,z.y,b.x,b.y) < 60 then
-				b.despawn = true
-				deathSFX:play()
-				z.despawn = true
-			end	
-			if distanceBetween(z.x,z.y,b.x2,b.y2) < 60 then
-				b.despawn = true
-				deathSFX:play()
-				z.despawn = true
-			end	
-		end
-	end
-	
 	
 	--this implements collision between smallAsteroid and bullets
 	for i, z in ipairs(smallAsteroidTracker) do
@@ -135,24 +137,7 @@ function asteroidUpdate()
 		end
 	end	
 
-	--destroy bigAsteroids
-	for i=#bigAsteroidTracker, 1, -1 do 
-		
-		local z = bigAsteroidTracker[i]
-		
-		if z.despawn == true then
-		
-			--spawn small asteroids
-			spawnSmallAsteroid(z.x, z.y, z.vectorX, z.vectorY) --exact same velocity as big asteroid 
-			spawnSmallAsteroid(z.x, z.y, (z.vectorX*-1), z.vectorY) --inverse x velocity
-			
-			
-			table.remove(bigAsteroidTracker, i) 
-			--destroys any bigAsteroids that meet the conditions
-		end	
-	end
-	
-	
+
 	--this destroy smallAsteroids who have despawn = true
 	for i=#smallAsteroidTracker, 1, -1 do 
 		
