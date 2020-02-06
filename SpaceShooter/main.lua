@@ -1,3 +1,5 @@
+
+
 function love.load()
 	--removes mouse cursor
 	love.mouse.setVisible(false)
@@ -43,6 +45,9 @@ function love.load()
 end
 
 function love.update(dt)
+	love.window.setTitle("Omar Kadri - DE Scripting Test")
+	grabMouse = love.mouse.setGrabbed(true)
+	
 	playerUpdate()
 	scrollingBackgroundUpdate()
 	bulletUpdate()
