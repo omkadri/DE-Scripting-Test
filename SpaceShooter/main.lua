@@ -54,9 +54,9 @@ function love.update(dt)
 
 	spawnTimer = spawnTimer - dt
 	if spawnTimer <= 0 then
-		spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30)
-		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,3))
-		maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.999
+		spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30, math.random(-3, 3),math.random (1, 5))
+		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
+		maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.99
 		spawnTimer = maxTimeBetweenSpawn
 	end
 

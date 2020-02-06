@@ -18,7 +18,7 @@ end
 function powerUpUpdate()
 	dt = love.timer.getDelta()
 	for i, p in ipairs(powerUpTracker) do
-		p.y = p.y + 100 * dt
+		p.y = p.y + math.random(100, 200) * dt
 		if distanceBetween(player.x,player.y,p.x,p.y) < 60 then
 			if p.flavor == 1 then
 				multishotActivate = true

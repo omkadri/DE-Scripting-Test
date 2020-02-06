@@ -1,6 +1,6 @@
 	background1y = 0
 	background2y = -2690
-	backgroundScrollingSpeed = 100
+	backgroundScrollingSpeed = 150
 	
 	
 	function scrollingBackgroundUpdate()
