@@ -20,16 +20,16 @@ function spawnbigAsteroid(x, y, radius, vx, vy)
 		getCoordinatesFromThetaAngles()
 		--These next lines calculate the XY coordinate data for the terminal ends of each clock hand.
 		--Terminal End of hour hand
-		bigAsteroid.hourHandX = (math.sin(thetaAngleForHours)*(bigAsteroid.radius*0.3) + bigAsteroid.x)
-		bigAsteroid.hourHandY = (math.cos(thetaAngleForHours)*(bigAsteroid.radius*0.3) + bigAsteroid.y)
+		bigAsteroid.hourHandX = 0
+		bigAsteroid.hourHandY = 0
 
 		--Terminal End of minute hand
-		bigAsteroid.minuteHandX = (math.sin(thetaAngleForMinutes)*(bigAsteroid.radius*0.60) + bigAsteroid.x)
-		bigAsteroid.minuteHandY = (math.cos(thetaAngleForMinutes)*(bigAsteroid.radius*0.60) + bigAsteroid.y)
+		bigAsteroid.minuteHandX = 0
+		bigAsteroid.minuteHandY = 0
 		
 		--Terminal End of second hand
-		bigAsteroid.SecondHandX = (math.sin(thetaAngleForSeconds)*(bigAsteroid.radius*0.75) + bigAsteroid.x)
-		bigAsteroid.SecondHandY = (math.cos(thetaAngleForSeconds)*(bigAsteroid.radius*0.75) + bigAsteroid.y)
+		bigAsteroid.SecondHandX = 0
+		bigAsteroid.SecondHandY = 0
 		
 		
 		
@@ -100,15 +100,17 @@ function asteroidUpdate()
 		for j, b in ipairs(bulletTracker) do --using j because i is taken
 			if distanceBetween(z.x,z.y,b.x,b.y)	< z.radius then
 				if z.radius == 50 then
-					deathSFX:play()
 					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
 					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
+					deathSFX:play()
 					currentScore = currentScore + 50
 					table.remove(bigAsteroidTracker, i)
 					table.remove(bulletTracker, j) 
 				else 
+					deathSFX:play()
+					currentScore = currentScore + 50
 					table.remove(bigAsteroidTracker, i)
-					table.remove(bulletTracker, j) 
+					table.remove(bulletTracker, j)  
 				end	
 			end	
 		end
@@ -116,25 +118,44 @@ function asteroidUpdate()
 		
 		--collision with multishot
 		for j, b in ipairs(multishotTracker) do --using j because i is taken
+			
+			
+			--collision with right multishot
 			if distanceBetween(z.x,z.y,b.x,b.y) < z.radius then
-				deathSFX:play()
-				spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
-				spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
-				currentScore = currentScore + 50
-				table.remove(bigAsteroidTracker, i) 
-				table.remove(multishotTracker, j) 
+				if z.radius == 50 then
+					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
+					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
+					currentScore = currentScore + 50
+					deathSFX:play()
+					currentScore = currentScore + 50
+					table.remove(bigAsteroidTracker, i)
+					table.remove(bulletTracker, j) 
+				elseif z.radius == 25 then
+					table.remove(bigAsteroidTracker, i) 
+					table.remove(multishotTracker, j) 
+				end
 			end	
+			
+			--collision with left multishot
 			if distanceBetween(z.x,z.y,b.x2,b.y2) < z.radius then
-				deathSFX:play()
-				spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
-				spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
-				currentScore = currentScore + 50
-				table.remove(bigAsteroidTracker, i) 
-				table.remove(multishotTracker, j) 
+				if z.radius == 50 then
+					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
+					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
+					currentScore = currentScore + 50
+					deathSFX:play()
+					currentScore = currentScore + 50
+					table.remove(bigAsteroidTracker, i)
+					table.remove(bulletTracker, j) 
+				elseif z.radius == 25 then
+					table.remove(bigAsteroidTracker, i) 
+					table.remove(multishotTracker, j) 
+				end
 			end	
 		end	
 		
+		
 	end
+	
 end
 	
 	
@@ -149,7 +170,21 @@ function drawAsteroid()
 		love.graphics.circle("line", z.x, z.y, z.radius)
 		love.graphics.circle("line", z.x, z.y, z.radius)
 
-		--Coordinating each of the hands
+		--Updating Coordinates of hour hands
+		z.hourHandX = (math.sin(thetaAngleForHours)*(z.radius*0.3) + z.x)
+		z.hourHandY = (math.cos(thetaAngleForHours)*(z.radius*0.3) + z.y)
+
+		--Updating Coordinates of minute hand
+		z.minuteHandX = (math.sin(thetaAngleForMinutes)*(z.radius*0.60) + z.x)
+		z.minuteHandY = (math.cos(thetaAngleForMinutes)*(z.radius*0.60) + z.y)
+		
+		--Updating Coordinates of second hand
+		z.SecondHandX = (math.sin(thetaAngleForSeconds)*(z.radius*0.75) + z.x)
+		z.SecondHandY = (math.cos(thetaAngleForSeconds)*(z.radius*0.75) + z.y)
+		
+		
+		
+		
 			--Seconds Hand
 		love.graphics.setColor(0,0,1)
 		love.graphics.line(z.x,z.y, z.SecondHandX,z.SecondHandY)--blue line(seconds)
