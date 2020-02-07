@@ -41,8 +41,11 @@ function love.load()
 
 	--Game State Initialization
 	currentScore = 0
-	maxTimeBetweenSpawn = 2
-	spawnTimer = maxTimeBetweenSpawn
+	maxTimeBetweenAsteroidSpawn = 2
+	asteroidSpawnTimer = maxTimeBetweenAsteroidSpawn
+	
+	maxTimeBetweenPowerUpSpawn = 2
+	powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
 
 end
 
@@ -59,15 +62,21 @@ function love.update(dt)
 	cooldownUpdate()
 	healthUpdate()
 
-	spawnTimer = spawnTimer - dt
-	if spawnTimer <= 0 then
+	asteroidSpawnTimer = asteroidSpawnTimer - dt
+	if asteroidSpawnTimer <= 0 then
 		spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30, math.random(-3, 3),math.random (1, 5))
-		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
-		maxTimeBetweenSpawn = maxTimeBetweenSpawn * 0.99
-		spawnTimer = maxTimeBetweenSpawn
+		maxTimeBetweenAsteroidSpawn = maxTimeBetweenAsteroidSpawn * 0.99
+		asteroidSpawnTimer = maxTimeBetweenAsteroidSpawn
 	end
-
+	
+	powerUpSpawnTimer = powerUpSpawnTimer - dt
+	if powerUpSpawnTimer <= 0 then
+		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
+		powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
+	end
 end
+
+
 
 function love.draw()
 	drawScrollingBackground()
