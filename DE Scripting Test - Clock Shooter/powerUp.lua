@@ -23,13 +23,18 @@ function powerUpUpdate()
 			if p.flavor == 1 then
 				multishotActivate = true
 				multishotTimer = 10
+				currentScore = currentScore + 100 
+				powerUpSFX:play()
 			elseif p.flavor == 2 then
 				healthLength = healthLength + 100
+				currentScore = currentScore + 100 
+				powerUpSFX:play()
 			elseif p.flavor == 3 then
 				invulnerability = true
 				invulnerabilityTimer = 10
+				currentScore = currentScore + 100 
+				powerUpSFX:play()
 			end
-			deathSFX:play()
 			p.despawn = true
 		end
 	end

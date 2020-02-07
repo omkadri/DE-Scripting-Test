@@ -59,6 +59,7 @@ function asteroidUpdate()
 				deathSFX:play()
 				spawnSmallAsteroid(z.x, z.y, z.vectorX, z.vectorY) --exact same velocity as big asteroid 
 				spawnSmallAsteroid(z.x, z.y, (z.vectorX*-1), z.vectorY) --inverse x velocity
+				currentScore = currentScore + 50
 				table.remove(bigAsteroidTracker, i)
 				table.remove(bulletTracker, j) 
 			end	
@@ -71,15 +72,17 @@ function asteroidUpdate()
 				deathSFX:play()
 				spawnSmallAsteroid(z.x, z.y, z.vectorX, z.vectorY) --exact same velocity as big asteroid 
 				spawnSmallAsteroid(z.x, z.y, (z.vectorX*-1), z.vectorY) --inverse x velocity
+				currentScore = currentScore + 50
 				table.remove(bigAsteroidTracker, i) 
-				table.remove(bulletTracker, j) 
+				table.remove(multishotTracker, j) 
 			end	
 			if distanceBetween(z.x,z.y,b.x2,b.y2) < 60 then
 				deathSFX:play()
 				spawnSmallAsteroid(z.x, z.y, z.vectorX, z.vectorY) --exact same velocity as big asteroid 
 				spawnSmallAsteroid(z.x, z.y, (z.vectorX*-1), z.vectorY) --inverse x velocity
+				currentScore = currentScore + 50
 				table.remove(bigAsteroidTracker, i) 
-				table.remove(bulletTracker, j) 
+				table.remove(multishotTracker, j) 
 			end	
 		end	
 		
@@ -115,6 +118,7 @@ function asteroidUpdate()
 		for j, b in ipairs(bulletTracker) do --using j because i is taken
 			if distanceBetween(z.x,z.y,b.x,b.y)	<30 then
 				deathSFX:play()
+				currentScore = currentScore + 50
 				z.despawn = true
 				b.despawn = true
 			end	
@@ -127,11 +131,13 @@ function asteroidUpdate()
 			if distanceBetween(z.x,z.y,b.x,b.y) < 60 then
 				b.despawn = true
 				deathSFX:play()
+				currentScore = currentScore + 50
 				z.despawn = true
 			end	
 			if distanceBetween(z.x,z.y,b.x2,b.y2) < 60 then
 				b.despawn = true
 				deathSFX:play()
+				currentScore = currentScore + 50
 				z.despawn = true
 			end	
 		end

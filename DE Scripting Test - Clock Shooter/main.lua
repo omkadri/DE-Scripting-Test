@@ -25,6 +25,7 @@ function love.load()
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
+	powerUpSFX = love.audio.newSource("sfx/powerUp.ogg", "static")
 	
 	--calling external scripts
 	require ('bullet')
@@ -39,6 +40,7 @@ function love.load()
 	
 
 	--Game State Initialization
+	currentScore = 0
 	maxTimeBetweenSpawn = 2
 	spawnTimer = maxTimeBetweenSpawn
 
@@ -76,6 +78,7 @@ function love.draw()
 	drawmultishot()
 	drawCooldown()
 	drawHealth()
+	love.graphics.print(currentScore, 700, 10)
 
 	
 	--draws reticle
