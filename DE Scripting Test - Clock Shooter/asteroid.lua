@@ -1,3 +1,7 @@
+maxTimeBetweenAsteroidSpawn = 2
+asteroidSpawnTimer = maxTimeBetweenAsteroidSpawn
+difficultyTimer = 10
+
 bigAsteroidTracker = {}
 
 smallAsteroidTracker = {}
@@ -33,6 +37,22 @@ function spawnSmallAsteroid(x, y, vx, vy)
 end
 
 function asteroidUpdate()
+	
+	--asteroid spawn initialization
+	asteroidSpawnTimer = asteroidSpawnTimer - dt
+	if asteroidSpawnTimer <= 0 then
+		spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30, math.random(-3, 3),math.random (1, 5))
+		asteroidSpawnTimer = maxTimeBetweenAsteroidSpawn
+	end
+	
+	--increases difficulty
+	difficultyTimer = difficultyTimer - dt
+	if difficultyTimer <= 0 then
+		maxTimeBetweenAsteroidSpawn = maxTimeBetweenAsteroidSpawn * 0.90
+		difficultyTimer = 10
+	end
+	
+	
 	
 	for i,z in ipairs(bigAsteroidTracker) do
 		--moves bigAsteroid towards player

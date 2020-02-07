@@ -1,3 +1,6 @@
+maxTimeBetweenPowerUpSpawn = 2
+powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
+
 powerUpTracker = {}
 
 function spawnPowerUp(x, y, flavor)
@@ -11,12 +14,17 @@ powerUp = {}
 	table.insert(powerUpTracker, powerUp)
 end
 
-
-
-
-
 function powerUpUpdate()
 	dt = love.timer.getDelta()
+	
+	--powerUp Spawn Initialization
+	powerUpSpawnTimer = powerUpSpawnTimer - dt
+	if powerUpSpawnTimer <= 0 then
+		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
+		powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
+	end
+
+	
 	for i, p in ipairs(powerUpTracker) do
 		p.y = p.y + math.random(100, 200) * dt
 		if distanceBetween(player.x,player.y,p.x,p.y) < 60 then
