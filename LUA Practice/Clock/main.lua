@@ -2,10 +2,12 @@ function love.load()
 end
 
 function love.update(dt)
+	getCoordinatesFromThetaAngles()
 	SetClockTansform (100, 100, 100)
 end
 
 function love.draw()
+	
 	drawClock()
 end
 
@@ -20,12 +22,18 @@ function SetClockTansform(x, y, size)
 		enemyClock.x = x
 		enemyClock.y = y
 		enemyClock.radius = size
-		enemyClock.hourHandX = 0
-		enemyClock.hourHandY = 0
-		enemyClock.minuteHandX = 0
-		enemyClock.minuteHandY = 0
-		enemyClock.secondHandX = 0
-		enemyClock.secondHandY = 0
+		--These next lines calculate the XY coordinate data for the terminal ends of each clock hand.
+		--Terminal End of hour hand
+		enemyClock.hourHandX = (math.sin(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.x)
+		enemyClock.hourHandY = (math.cos(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.y)
+
+		--Terminal End of minute hand
+		enemyClock.minuteHandX = (math.sin(thetaAngleForMinutes)*(enemyClock.radius*0.60) + enemyClock.x)
+		enemyClock.minuteHandY = (math.cos(thetaAngleForMinutes)*(enemyClock.radius*0.60) + enemyClock.y)
+		
+		--Terminal End of second hand
+		enemyClock.SecondHandX = (math.sin(thetaAngleForSeconds)*(enemyClock.radius*0.75) + enemyClock.x)
+		enemyClock.SecondHandY = (math.cos(thetaAngleForSeconds)*(enemyClock.radius*0.75) + enemyClock.y)
 end
 
 
@@ -45,30 +53,13 @@ function getCoordinatesFromThetaAngles()
     thetaAngleForMinutes = thetaAngleCalculator (os.date("%M"), 60)
     thetaAngleForSeconds = thetaAngleCalculator (os.date("%S"), 60)
 	
-	--These next lines calculate the XY coordinate data for the terminal ends of each clock hand.
-    --Terminal End of hour hand
-    enemyClock.hourHandX = (math.sin(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.x)
-    enemyClock.hourHandY = (math.cos(thetaAngleForHours)*(enemyClock.radius*0.3) + enemyClock.y)
 
-    --Terminal End of minute hand
-    enemyClock.minuteHandX = (math.sin(thetaAngleForMinutes)*(enemyClock.radius*0.60) + enemyClock.x)
-    enemyClock.minuteHandY = (math.cos(thetaAngleForMinutes)*(enemyClock.radius*0.60) + enemyClock.y)
-	
-	--Terminal End of second hand
-    enemyClock.SecondHandX = (math.sin(thetaAngleForSeconds)*(enemyClock.radius*0.75) + enemyClock.x)
-    enemyClock.SecondHandY = (math.cos(thetaAngleForSeconds)*(enemyClock.radius*0.75) + enemyClock.y)
 end
 
 
 --DRAWING
 function drawClock()
-	
-	--trigonometry
-	getCoordinatesFromThetaAngles()
-	
-	--grab default color data
-	r, g, b, a = love.graphics.getColor( )
-	
+		
 	--sets font to be proportionate
 	clockFont = love.graphics.newFont(enemyClock.radius / 4, center)
 
@@ -108,7 +99,7 @@ function drawClock()
     love.graphics.circle("fill", enemyClock.x, enemyClock.y, 5)
 	
 	--reset color data to default
-	love.graphics.setColor(r,g,b)
+	love.graphics.setColor(255,255,255)
 end
 
 function drawDebugger()
