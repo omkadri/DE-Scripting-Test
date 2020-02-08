@@ -1,4 +1,4 @@
-
+gameState = 2
 
 function love.load()
 	--removes mouse cursor
@@ -27,6 +27,10 @@ function love.load()
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
 	powerUpSFX = love.audio.newSource("sfx/powerUp.ogg", "static")
 	
+	music = love.audio.newSource("sfx/ColdplayClocks8Bit.ogg", "static")
+    music:setLooping(true)
+    music:play()
+	
 	--calling external scripts
 	require ('bullet')
 	require ('asteroid')
@@ -51,35 +55,42 @@ end
 function love.update(dt)
 	love.window.setTitle("Omar Kadri - DE Scripting Test")
 	grabMouse = love.mouse.setGrabbed(true)
-	
-	playerUpdate()
 	scrollingBackgroundUpdate()
-	bulletUpdate()
-	multishotUpdate()
-	asteroidUpdate()
-	powerUpUpdate()
-	cooldownUpdate()
-	healthUpdate()
 	
-	powerUpSpawnTimer = powerUpSpawnTimer - dt
-	if powerUpSpawnTimer <= 0 then
-		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
-		powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
+	if gameState == 2 then
+		playerUpdate()
+		bulletUpdate()
+		multishotUpdate()
+		asteroidUpdate()
+		powerUpUpdate()
+		cooldownUpdate()
+		healthUpdate()
+		
+		powerUpSpawnTimer = powerUpSpawnTimer - dt
+		if powerUpSpawnTimer <= 0 then
+			spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
+			powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
+		end
 	end
+	
+
 end
 
 
 
-function love.draw()
+function love.draw(dt)
 	drawScrollingBackground()
-	powerUpDraw()
-	drawBullet()
-	drawPlayer()
-	drawAsteroid()
-	drawmultishot()
-	drawCooldown()
-	drawHealth()
-	love.graphics.print(currentScore, 700, 10)
+	
+	if gameState == 2 then
+		powerUpDraw()
+		drawBullet()
+		drawPlayer()
+		drawAsteroid()
+		drawmultishot()
+		drawCooldown()
+		drawHealth()
+		love.graphics.print(currentScore, 700, 10)
+	end
 
 	
 	--draws reticle
