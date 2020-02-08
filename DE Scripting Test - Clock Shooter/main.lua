@@ -67,7 +67,7 @@ function love.update(dt)
 		
 		powerUpSpawnTimer = powerUpSpawnTimer - dt
 		if powerUpSpawnTimer <= 0 then
-			spawnPowerUp(math.random(30, love.graphics:getWidth()-30), -30, math.random (1,15))
+			spawnPowerUp(math.random(40, love.graphics:getWidth()-40), -30, math.random (1,15))
 			powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
 		end
 	end	
@@ -80,20 +80,20 @@ function love.draw(dt)
 	drawScrollingBackground()
 	love.graphics.print(currentScore, 650, 10, nil, 2, 2)
 
+
 	
 	if gameState == 2 then
 		powerUpDraw()
-		drawBullet()
-		drawPlayer()
 		drawEnemyClock()
 		drawmultishot()
+		drawBullet()
 		drawCooldown()
+		drawPlayer()
 		drawHealth()
 	end
 	if gameState == 3 then
 		love.graphics.print("GAME OVER!!!", love.graphics:getWidth()/2, love.graphics:getHeight()/2)
 	end
-
 	
 	--draws reticle
 	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)

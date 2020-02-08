@@ -53,7 +53,10 @@ function enemyClockUpdate()
 		difficultyTimer = 10
 	end
 	
-	
+	--caps difficulty
+	if maxTimeBetweenEnemyClockSpawn <= 0.35 then
+		maxTimeBetweenEnemyClockSpawn = 0.55
+	end
 	
 	for i,z in ipairs(enemyClockTracker) do
 		--moves enemyClock towards player

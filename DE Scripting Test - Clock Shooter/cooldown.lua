@@ -22,7 +22,7 @@ end
 function drawCooldown()
 	if cooldown.overheated == true then
 		love.graphics.setColor(1,0,0)
-		love.graphics.print("OVERHEATED!!!", 10, 50)
+		love.graphics.print("OVERHEATED!!!", 10, 50, nil, 2, 2)
 		
 	elseif cooldown.length < 100 then
 		love.graphics.setColor(1,1,0)
