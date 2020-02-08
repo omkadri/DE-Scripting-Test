@@ -32,7 +32,7 @@ function drawHealth()
 		
 		--draws forcefield around player when invulnerable
 		if invulnerability == true then
-			love.graphics.draw(sprites.shieldEffect, player.x, player.y, nil, 0.5, 0.5,sprites.shieldEffect:getWidth()/2,sprites.shieldEffect:getHeight()/2)
+			love.graphics.draw(sprites.shieldEffect, player.x, player.y, nil, 1, 1,sprites.shieldEffect:getWidth()/2,sprites.shieldEffect:getHeight()/2)
 		end
 	end
 		

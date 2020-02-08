@@ -1,6 +1,8 @@
 maxTimeBetweenPowerUpSpawn = 2
 powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
 
+shieldTimer = 0
+
 powerUpTracker = {}
 
 function spawnPowerUp(x, y, flavor)
@@ -16,6 +18,9 @@ end
 
 function powerUpUpdate()
 	dt = love.timer.getDelta()
+	if shieldTimer > 0 then
+		shieldTimer = shieldTimer - dt
+	end
 	
 	--powerUp Spawn Initialization
 	powerUpSpawnTimer = powerUpSpawnTimer - dt
@@ -40,6 +45,7 @@ function powerUpUpdate()
 			elseif p.flavor == 3 then
 				invulnerability = true
 				invulnerabilityTimer = 10
+				shieldTimer = 10
 				currentScore = currentScore + 100 
 				powerUpSFX:play()
 			end
@@ -72,6 +78,11 @@ function powerUpDraw()
 		end
 	end
 	
+	if shieldTimer > 0 then
+		love.graphics.setColor(0,1,1)
+		love.graphics.print("Overshield: "..math.ceil(shieldTimer), 10, 80, nil, 2, 2)
+		love.graphics.setColor(255,255,255)
+	end
 end
 	
 	

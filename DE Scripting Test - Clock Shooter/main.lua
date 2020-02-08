@@ -77,6 +77,8 @@ end
 
 function love.draw(dt)
 	drawScrollingBackground()
+	love.graphics.print(currentScore, 650, 10, nil, 2, 2)
+
 	
 	if gameState == 2 then
 		powerUpDraw()
@@ -86,7 +88,6 @@ function love.draw(dt)
 		drawmultishot()
 		drawCooldown()
 		drawHealth()
-		love.graphics.print(currentScore, 700, 10)
 	end
 	if gameState == 3 then
 		love.graphics.print("GAME OVER!!!", love.graphics:getWidth()/2, love.graphics:getHeight()/2)
