@@ -64,7 +64,7 @@ function drawmultishot()
 	end
 	
 	if multishotActivate == true then
-		love.graphics.setColor(1,0,1)
+		love.graphics.setColor(1,0.5,0)
 		love.graphics.print("Multishot: "..math.ceil(multishotTimer), 10, 50, nil, 2, 2)
 		cooldown.overheated = false
 	end

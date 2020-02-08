@@ -12,6 +12,7 @@ function love.load()
 		sprites.reticle = love.graphics.newImage('sprites/reticle.png')
 		sprites.multishot = love.graphics.newImage('sprites/multishot.png')
 		sprites.shieldIcon = love.graphics.newImage('sprites/shieldIcon.png')
+		sprites.superSpeed = love.graphics.newImage('sprites/superSpeed.png')
 		sprites.shieldEffect = love.graphics.newImage('sprites/shieldEffect.png')
 		sprites.health = love.graphics.newImage('sprites/health.png')
 		sprites.damage1 = love.graphics.newImage('sprites/damage1.png')
@@ -66,7 +67,7 @@ function love.update(dt)
 		
 		powerUpSpawnTimer = powerUpSpawnTimer - dt
 		if powerUpSpawnTimer <= 0 then
-			spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
+			spawnPowerUp(math.random(30, love.graphics:getWidth()-30), -30, math.random (1,15))
 			powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
 		end
 	end	

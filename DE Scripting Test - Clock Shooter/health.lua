@@ -29,11 +29,6 @@ function drawHealth()
 		love.graphics.setColor(0,1,0)
 		love.graphics.rectangle( "fill", 10, 10, healthLength, 15 )
 		love.graphics.setColor(255, 255, 255)
-		
-		--draws forcefield around player when invulnerable
-		if invulnerability == true then
-			love.graphics.draw(sprites.shieldEffect, player.x, player.y, nil, 1, 1,sprites.shieldEffect:getWidth()/2,sprites.shieldEffect:getHeight()/2)
-		end
 	end
 		
 	if healthLength ==150 then
