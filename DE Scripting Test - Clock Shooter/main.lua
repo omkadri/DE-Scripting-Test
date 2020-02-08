@@ -10,8 +10,6 @@ function love.load()
 		sprites.bullet = love.graphics.newImage('sprites/bullet.png')
 		sprites.background = love.graphics.newImage('sprites/background.png')
 		sprites.reticle = love.graphics.newImage('sprites/reticle.png')
-		sprites.asteroid1 = love.graphics.newImage('sprites/asteroid1.png')
-		sprites.asteroid2 = love.graphics.newImage('sprites/asteroid2.png')
 		sprites.multishot = love.graphics.newImage('sprites/multishot.png')
 		sprites.shieldIcon = love.graphics.newImage('sprites/shieldIcon.png')
 		sprites.shieldEffect = love.graphics.newImage('sprites/shieldEffect.png')
@@ -33,7 +31,7 @@ function love.load()
 	
 	--calling external scripts
 	require ('bullet')
-	require ('asteroid')
+	require ('enemyClock')
 	require ('multishot')
 	require ('cooldown')
 	require ('player')
@@ -61,7 +59,7 @@ function love.update(dt)
 		playerUpdate()
 		bulletUpdate()
 		multishotUpdate()
-		asteroidUpdate()
+		enemyClockUpdate()
 		powerUpUpdate()
 		cooldownUpdate()
 		healthUpdate()
@@ -71,8 +69,7 @@ function love.update(dt)
 			spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
 			powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
 		end
-	end
-	
+	end	
 
 end
 
@@ -85,11 +82,14 @@ function love.draw(dt)
 		powerUpDraw()
 		drawBullet()
 		drawPlayer()
-		drawAsteroid()
+		drawEnemyClock()
 		drawmultishot()
 		drawCooldown()
 		drawHealth()
 		love.graphics.print(currentScore, 700, 10)
+	end
+	if gameState == 3 then
+		love.graphics.print("GAME OVER!!!", love.graphics:getWidth()/2, love.graphics:getHeight()/2)
 	end
 
 	
@@ -141,11 +141,6 @@ function playerMouseAngleCalculation()
 	return math.atan2(player.y - love.mouse.getY(), player.x - love.mouse.getX()) + math.pi
 end
 
---finds theta angle between player and enemy of interest
-function enemyToPlayerAngleCalculation(enemy)
-	--uses trig to calculate the angle in which the bigAsteroid is facing the player
-	return math.atan2(enemy.y - player.y, enemy.x - player.x) + math.pi
-end
 
 --calculates distance between to coordinates (used for collision detection)
 function distanceBetween(x1,y1,x2,y2)

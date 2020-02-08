@@ -1,76 +1,62 @@
-maxTimeBetweenAsteroidSpawn = 2
-asteroidSpawnTimer = maxTimeBetweenAsteroidSpawn
+maxTimeBetweenEnemyClockSpawn = 2
+enemyClockSpawnTimer = maxTimeBetweenEnemyClockSpawn
 difficultyTimer = 10
 
-bigAsteroidTracker = {}
+enemyClockTracker = {}
 
-function spawnbigAsteroid(x, y, radius, vx, vy)
-	bigAsteroid = {}
-		bigAsteroid.x = x
-		bigAsteroid.y = y
-		bigAsteroid.vectorX = vx
-		bigAsteroid.vectorY = vy
-		bigAsteroid.direction = 1
-		bigAsteroid.speed = 100
-		bigAsteroid.offsetX = sprites.asteroid1:getWidth()/2
-		bigAsteroid.offsetY = sprites.asteroid1:getHeight()/2--center bigAsteroid pivot point
-		bigAsteroid.despawn = false	
-		bigAsteroid.radius = radius
+function spawnenemyClock(x, y, radius, vx, vy)
+	enemyClock = {}
+		enemyClock.x = x
+		enemyClock.y = y
+		enemyClock.vectorX = vx
+		enemyClock.vectorY = vy
+		enemyClock.direction = 1
+		enemyClock.speed = 100
+		enemyClock.despawn = false	
+		enemyClock.radius = radius
 		
 		getCoordinatesFromThetaAngles()
 		--These next lines calculate the XY coordinate data for the terminal ends of each clock hand.
 		--Terminal End of hour hand
-		bigAsteroid.hourHandX = 0
-		bigAsteroid.hourHandY = 0
+		enemyClock.hourHandX = 0
+		enemyClock.hourHandY = 0
 
 		--Terminal End of minute hand
-		bigAsteroid.minuteHandX = 0
-		bigAsteroid.minuteHandY = 0
+		enemyClock.minuteHandX = 0
+		enemyClock.minuteHandY = 0
 		
 		--Terminal End of second hand
-		bigAsteroid.SecondHandX = 0
-		bigAsteroid.SecondHandY = 0
+		enemyClock.SecondHandX = 0
+		enemyClock.SecondHandY = 0
 		
 		
 		
-		table.insert(bigAsteroidTracker, bigAsteroid)--adds this bigAsteroid table to the bigAsteroidTracker table in love.load()
+		table.insert(enemyClockTracker, enemyClock)--adds this enemyClock table to the enemyClockTracker table in love.load()
 
 		
 end
 
-function spawnSmallAsteroid(x, y, vx, vy)
-	smallAsteroid = {}
-		smallAsteroid.x = x
-		smallAsteroid.y = y
-		smallAsteroid.vectorX = vx
-		smallAsteroid.vectorY = vy
-		smallAsteroid.speed = 150
-		smallAsteroid.offsetX = sprites.asteroid2:getWidth()/2
-		smallAsteroid.offsetY = sprites.asteroid2:getHeight()/2--center bigAsteroid pivot point
-		smallAsteroid.despawn = false
-		table.insert(smallAsteroidTracker, smallAsteroid)--adds this bigAsteroid table to the bigAsteroidTracker table in love.load()
-end
 
-function asteroidUpdate()
+function enemyClockUpdate()
 	
-	--asteroid spawn initialization
-	asteroidSpawnTimer = asteroidSpawnTimer - dt
-	if asteroidSpawnTimer <= 0 then
-		spawnbigAsteroid(math.random(0, love.graphics:getWidth()), -30, 50, math.random(-3, 3),math.random (1, 5))
-		asteroidSpawnTimer = maxTimeBetweenAsteroidSpawn
+	--enemyClock spawn initialization
+	enemyClockSpawnTimer = enemyClockSpawnTimer - dt
+	if enemyClockSpawnTimer <= 0 then
+		spawnenemyClock(math.random(0, love.graphics:getWidth()), -30, 50, math.random(-3, 3),math.random (1, 5))
+		enemyClockSpawnTimer = maxTimeBetweenEnemyClockSpawn
 	end
 	
 	--increases difficulty
 	difficultyTimer = difficultyTimer - dt
 	if difficultyTimer <= 0 then
-		maxTimeBetweenAsteroidSpawn = maxTimeBetweenAsteroidSpawn * 0.90
+		maxTimeBetweenEnemyClockSpawn = maxTimeBetweenEnemyClockSpawn * 0.90
 		difficultyTimer = 10
 	end
 	
 	
 	
-	for i,z in ipairs(bigAsteroidTracker) do
-		--moves bigAsteroid towards player
+	for i,z in ipairs(enemyClockTracker) do
+		--moves enemyClock towards player
 		z.x = z.x + z.vectorX * z.speed * z.direction * dt
 		z.y = z.y + z.vectorY * z.speed * dt
 		--Terminal End of hour hand
@@ -83,7 +69,7 @@ function asteroidUpdate()
 		z.SecondHandX = z.SecondHandX + z.vectorX * z.speed * z.direction * dt
 		z.SecondHandY = z.SecondHandY + z.vectorY * z.speed * dt
 		
-		--stops asteroids from leaving screen
+		--stops enemyClocks from leaving screen
 		if z.x <= 0 or z.x >= love.graphics:getWidth() then
 			z.direction = z.direction * -1
 		end
@@ -92,24 +78,24 @@ function asteroidUpdate()
 		if distanceBetween(z.x, z.y, player.x, player.y) < 70 and invulnerability == false then
 			invulnerability = true
 			healthLength = healthLength - 50
-			invulnerabilityTimer = 1
-			table.remove(bigAsteroidTracker, i) 
+			invulnerabilityTimer = 0.25 -- So player has time to breathe before being instantly destroyed by new enemyClock spawn
+			table.remove(enemyClockTracker, i) 
 		end
 		
 		--collision with bullet
 		for j, b in ipairs(bulletTracker) do --using j because i is taken
 			if distanceBetween(z.x,z.y,b.x,b.y)	< (z.radius+10) then
 				if z.radius == 50 then
-					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
-					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
+					spawnenemyClock(z.x, z.y, 25, z.vectorX, z.vectorY)
+					spawnenemyClock(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
 					deathSFX:play()
 					currentScore = currentScore + 50
-					table.remove(bigAsteroidTracker, i)
+					table.remove(enemyClockTracker, i)
 					table.remove(bulletTracker, j) 
 				else 
 					deathSFX:play()
 					currentScore = currentScore + 50
-					table.remove(bigAsteroidTracker, i)
+					table.remove(enemyClockTracker, i)
 					table.remove(bulletTracker, j)  
 				end	
 			end	
@@ -123,15 +109,15 @@ function asteroidUpdate()
 			--collision with right multishot
 			if distanceBetween(z.x,z.y,b.x,b.y) < (z.radius+10) then
 				if z.radius == 50 then
-					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
-					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
+					spawnenemyClock(z.x, z.y, 25, z.vectorX, z.vectorY)
+					spawnenemyClock(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
 					currentScore = currentScore + 50
 					deathSFX:play()
 					currentScore = currentScore + 50
-					table.remove(bigAsteroidTracker, i)
+					table.remove(enemyClockTracker, i)
 					table.remove(bulletTracker, j) 
 				elseif z.radius == 25 then
-					table.remove(bigAsteroidTracker, i) 
+					table.remove(enemyClockTracker, i) 
 					table.remove(multishotTracker, j) 
 				end
 			end	
@@ -139,15 +125,15 @@ function asteroidUpdate()
 			--collision with left multishot
 			if distanceBetween(z.x,z.y,b.x2,b.y2) < (z.radius+10) then
 				if z.radius == 50 then
-					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
-					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
+					spawnenemyClock(z.x, z.y, 25, z.vectorX, z.vectorY)
+					spawnenemyClock(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
 					currentScore = currentScore + 50
 					deathSFX:play()
 					currentScore = currentScore + 50
-					table.remove(bigAsteroidTracker, i)
+					table.remove(enemyClockTracker, i)
 					table.remove(bulletTracker, j) 
 				elseif z.radius == 25 then
-					table.remove(bigAsteroidTracker, i) 
+					table.remove(enemyClockTracker, i) 
 					table.remove(multishotTracker, j) 
 				end
 			end	
@@ -159,9 +145,9 @@ function asteroidUpdate()
 end
 	
 	
-function drawAsteroid()
-	--draws bigAsteroids
-	for i, z in ipairs(bigAsteroidTracker) do
+function drawEnemyClock()
+	--draws enemyClocks
+	for i, z in ipairs(enemyClockTracker) do
 		
 		--clock outline and appearence
 		love.graphics.setColor(0.5,0.5,0.5)

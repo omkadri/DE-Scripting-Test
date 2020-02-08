@@ -39,7 +39,7 @@ function multishotUpdate()
 		if b.x < -1000 or b.y < -1000 or b.x > (love.graphics.getWidth()+1000) or b.y > (love.graphics.getHeight()+1000) then
 			table.remove(multishotTracker, i) --removes any multishot in multishotTracker that meets the if condition
 		
-		--for multishots that hit Asteroids
+		--for multishots that hit enemyClock
 		elseif b.despawn == true then
 			table.remove(multishotTracker, i) 
 			--destroys any multishots that meet the conditions

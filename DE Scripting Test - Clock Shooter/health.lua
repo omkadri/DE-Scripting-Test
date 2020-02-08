@@ -18,7 +18,9 @@ function healthUpdate()
 		healthLength = 200
 	end
 	
-
+	if healthLength <=0 then
+		gameState =3
+	end
 end
 
 function drawHealth()

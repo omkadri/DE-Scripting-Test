@@ -24,23 +24,21 @@ function playerUpdate(dt)
 end
 
 function drawPlayer()
-	if healthLength > 0 then
 		love.graphics.draw(sprites.player, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)
-	else
-		love.graphics.print("GAME OVER!!!", love.graphics:getWidth()/2, love.graphics:getHeight()/2)
-	end
-	
+
 end
 
 
 
 
 function love.mousepressed(x, y, b, istouch)
-	if b ==1 and cooldown.overheated == false and multishotActivate == true then
-		spawnBullet()
-		spawnmultishot()
-	elseif b ==1 and cooldown.overheated == false then
-		spawnBullet()
-		cooldown.length = cooldown.length + 20
+	if gameState == 2 then
+		if b ==1 and cooldown.overheated == false and multishotActivate == true then
+			spawnBullet()
+			spawnmultishot()
+		elseif b ==1 and cooldown.overheated == false then
+			spawnBullet()
+			cooldown.length = cooldown.length + 20
+		end
 	end
 end
