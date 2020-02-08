@@ -36,7 +36,7 @@ function multishotUpdate()
 		local b = multishotTracker[i] --unlike the previous for loops, here we need to specify the value of b.
 		
 		--for off-screen multishots
-		if b.x < 0 or b.y < 0 or b.x > love.graphics.getWidth() or b.y > love.graphics.getHeight() then
+		if b.x < -1000 or b.y < -1000 or b.x > (love.graphics.getWidth()+1000) or b.y > (love.graphics.getHeight()+1000) then
 			table.remove(multishotTracker, i) --removes any multishot in multishotTracker that meets the if condition
 		
 		--for multishots that hit Asteroids

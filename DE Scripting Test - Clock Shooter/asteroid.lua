@@ -98,7 +98,7 @@ function asteroidUpdate()
 		
 		--collision with bullet
 		for j, b in ipairs(bulletTracker) do --using j because i is taken
-			if distanceBetween(z.x,z.y,b.x,b.y)	< z.radius then
+			if distanceBetween(z.x,z.y,b.x,b.y)	< (z.radius+10) then
 				if z.radius == 50 then
 					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
 					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
@@ -121,7 +121,7 @@ function asteroidUpdate()
 			
 			
 			--collision with right multishot
-			if distanceBetween(z.x,z.y,b.x,b.y) < z.radius then
+			if distanceBetween(z.x,z.y,b.x,b.y) < (z.radius+10) then
 				if z.radius == 50 then
 					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
 					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
@@ -137,7 +137,7 @@ function asteroidUpdate()
 			end	
 			
 			--collision with left multishot
-			if distanceBetween(z.x,z.y,b.x2,b.y2) < z.radius then
+			if distanceBetween(z.x,z.y,b.x2,b.y2) < (z.radius+10) then
 				if z.radius == 50 then
 					spawnbigAsteroid(z.x, z.y, 25, z.vectorX, z.vectorY)
 					spawnbigAsteroid(z.x, z.y, 25, (z.vectorX*-1), z.vectorY)
