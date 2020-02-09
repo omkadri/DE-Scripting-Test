@@ -1,11 +1,17 @@
+--variables for spawning powerUps
 maxTimeBetweenPowerUpSpawn = 2
 powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
+
 
 shieldTimer = 0
 speedTimer = 0
 
+
+-- keeps track of all powerUp instances
 powerUpTracker = {}
 
+
+--spawns powerUp at XY position with a certain flavor(shield pickup, multishot pickup, health pickup, multishot pickup)
 function spawnPowerUp(x, y, flavor)
 powerUp = {}
 	powerUp.x = x
@@ -13,16 +19,21 @@ powerUp = {}
 	powerUp.flavor = flavor
 	powerUp.offsetX = sprites.multishot:getWidth()/2
 	powerUp.offsetY = sprites.multishot:getHeight()/2
-	
 	table.insert(powerUpTracker, powerUp)
 end
 
+
+--CALLED IN MAIN.LUA
 function powerUpUpdate()
-	dt = love.timer.getDelta()
+	dt = love.timer.getDelta( )
+
+	--ensures limited shield
 	if shieldTimer > 0 then
 		shieldTimer = shieldTimer - dt
 	end
 	
+	
+	--properties of speed powerUp
 	if speedTimer > 0 then
 		speedTimer = speedTimer - dt
 		player.speed = 750
@@ -30,7 +41,8 @@ function powerUpUpdate()
 		player.speed = 250
 	end
 	
-	--powerUp Spawn Initialization
+	
+	--powerUp Spawn Behaviour
 	powerUpSpawnTimer = powerUpSpawnTimer - dt
 	if powerUpSpawnTimer <= 0 then
 		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
@@ -38,63 +50,74 @@ function powerUpUpdate()
 		powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
 	end
 	
+	
+	--makes powerUp spawn rates go back and fourth from high to low
 	if maxTimeBetweenPowerUpSpawn >= 3.75 then
 		maxTimeBetweenPowerUpSpawn = 2.5
 	end
 
-	
+	--MAIN POWER UP FOR LOOP
 	for i, p in ipairs(powerUpTracker) do
+		
+		--makes powerUps move downward vertically
 		p.y = p.y + math.random(100, 200) * dt
-		if distanceBetween(player.x,player.y,p.x,p.y) < 60 then
-			if p.flavor == 1 then
-				multishotActivate = true
-				multishotTimer = 10
-				currentScore = currentScore + 100 
-				powerUpSFX:play()
-			elseif p.flavor == 2 then
-				healthLength = healthLength + 50
-				currentScore = currentScore + 100 
-				powerUpSFX:play()
-			elseif p.flavor == 3 then
-				invulnerability = true
-				invulnerabilityTimer = 10
-				shieldTimer = 10
-				currentScore = currentScore + 100 
-				powerUpSFX:play()
-			elseif p.flavor == 4 then
-				speedTimer = 10
-				currentScore = currentScore + 100 
-				powerUpSFX:play()
-			end			
-			p.despawn = true
-		end
-	end
-	
-	
-	--destroys power up
-	for i=#powerUpTracker, 1, -1 do 
 		
-		local p = powerUpTracker[i]
-		
-		if p.despawn == true then
-			table.remove(powerUpTracker, i) 
-		end	
+			--collision with player
+			if distanceBetween(player.x,player.y,p.x,p.y) < 60 then
+					--multishot activation
+					if p.flavor == 1 then
+						multishotActivate = true
+						multishotTimer = 10
+						currentScore = currentScore + 100 
+						powerUpSFX:play()					
+					-- health pickup activation
+					elseif p.flavor == 2 then
+						healthLength = healthLength + 50
+						currentScore = currentScore + 100 
+						powerUpSFX:play()					
+					-- shield activation
+					elseif p.flavor == 3 then
+						invulnerability = true
+						invulnerabilityTimer = 10
+						shieldTimer = 10
+						currentScore = currentScore + 100 
+						powerUpSFX:play()
+					--speed activation
+					elseif p.flavor == 4 then
+						speedTimer = 10
+						currentScore = currentScore + 100 
+						powerUpSFX:play()
+					end	
+				--destroys powerUp instance
+				table.remove(powerUpTracker, i)
+			end
+			
+			--destroys off-screen powerUpSFX
+			if p.y >= 1100 then
+				table.remove(powerUpTracker, i)
+			end
 	end
 	
 end
 
+--CALLED IN MAIN.LUA
 function powerUpDraw()
 	
+	--draws every power up instance
 	for i,p in ipairs(powerUpTracker) do
-		if p.flavor == 1 then
-			love.graphics.draw(sprites.multishot, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
-		elseif p.flavor == 2 then
-			love.graphics.draw(sprites.health, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
-		elseif p.flavor == 3 then
-			love.graphics.draw(sprites.shieldIcon, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
-		elseif p.flavor == 4 then
-			love.graphics.draw(sprites.superSpeed, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
-		end
+			--draws multishot icon
+			if p.flavor == 1 then
+				love.graphics.draw(sprites.multishot, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
+			--draws health pickup icon
+			elseif p.flavor == 2 then
+				love.graphics.draw(sprites.health, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
+			--draws shield icon
+			elseif p.flavor == 3 then
+				love.graphics.draw(sprites.shieldIcon, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
+			--draws speed icon
+			elseif p.flavor == 4 then
+				love.graphics.draw(sprites.superSpeed, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
+			end
 	end
 	
 	--draws shield countdown

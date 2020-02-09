@@ -1,8 +1,14 @@
 gameState = 2
 
 function love.load()
-	--removes mouse cursor
+	--sets up window
+	success = love.window.setMode( 750, 900)
+	love.window.setTitle("Omar Kadri - DE Scripting Test")
+	
+	-- makes mouse invisible and locks to screen
 	love.mouse.setVisible(false)
+	grabMouse = love.mouse.setGrabbed(true)
+
 
 	--sprite setup
 	sprites = {}
@@ -19,13 +25,13 @@ function love.load()
 		sprites.damage2 = love.graphics.newImage('sprites/damage2.png')
 		sprites.damage3 = love.graphics.newImage('sprites/damage3.png')
 	
-	success = love.window.setMode( 750, 900)
 
 	--sound
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
 	powerUpSFX = love.audio.newSource("sfx/powerUp.ogg", "static")
 	
+	--music
 	music = love.audio.newSource("sfx/ColdplayClocks8Bit.ogg", "static")
     music:setLooping(true)
     music:play()
@@ -37,19 +43,15 @@ function love.load()
 	require ('cooldown')
 	require ('player')
 	require ('scrollingBackground')
-	require ('health')
 	require ('powerUp')
+	require ('health')
 	
-	
-
 	--Game State Initialization
 	currentScore = 0
 
 end
 
 function love.update(dt)
-	love.window.setTitle("Omar Kadri - DE Scripting Test")
-	grabMouse = love.mouse.setGrabbed(true)
 	scrollingBackgroundUpdate()
 	
 	if gameState == 2 then
@@ -61,7 +63,6 @@ function love.update(dt)
 		cooldownUpdate()
 		healthUpdate()
 	end	
-
 end
 
 
@@ -79,6 +80,7 @@ function love.draw(dt)
 		drawPlayer()
 		drawHealth()
 	end
+	
 	if gameState == 3 then
 		love.graphics.print("GAME OVER!!!", love.graphics:getWidth()/2, love.graphics:getHeight()/2)
 	end

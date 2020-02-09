@@ -1,7 +1,7 @@
-dt = love.timer.getDelta()
-
+-- keeps track of all bullet instances
 bulletTracker = {}
 
+--contains all bullet properties
 function spawnBullet()
 		bullet = {}
 		bullet.x = player.x
@@ -16,7 +16,11 @@ function spawnBullet()
 		table.insert(bulletTracker, bullet)--adds this bullet table to the enemy1Tracker table in love.load()
 end
 
+
+--called in main.lua update function
 function bulletUpdate()
+	dt = love.timer.getDelta( )
+
 	--makes bullet move
 	for i, b in ipairs(bulletTracker) do
 		b.x = b.x + math.cos(b.direction) * b.speed * dt
@@ -36,8 +40,11 @@ function bulletUpdate()
 	
 end
 
+
+--called in main.lua draw function
 function drawBullet()
 	for i,b in ipairs(bulletTracker) do
+		--draws bullet sprite on every instance
 		love.graphics.draw(sprites.bullet, b.x, b.y, nil, 0.5, 0.5,bullet.offsetX,bullet.offsetY)
 	end
 end
