@@ -23,4 +23,12 @@ function cooldownUpdate()
 	if cooldown.length <= 0 then
 		cooldown.overheated = false
 	end
+	
+	--overheating sound 
+	if cooldown.overheated == true then
+		cooldownSFX:setLooping(true)
+		cooldownSFX:play()
+	else 
+		cooldownSFX:stop()
+	end	
 end

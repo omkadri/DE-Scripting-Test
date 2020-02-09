@@ -84,6 +84,8 @@ function enemyClockUpdate()
 				playerHitSFX:play()
 				table.remove(enemyClockTracker, i) 
 		elseif distanceBetween(z.x, z.y, player.x, player.y) < (z.radius+10) and invulnerability == true then
+				deathSFX:stop()
+				deathSFX:play()
 				table.remove(enemyClockTracker, i) 
 		end
 		

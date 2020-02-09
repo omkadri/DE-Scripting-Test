@@ -69,11 +69,13 @@ function powerUpUpdate()
 						multishotActivate = true
 						multishotTimer = 10
 						currentScore = currentScore + 100 
+						powerUpSFX:stop()
 						powerUpSFX:play()					
 					-- health pickup activation
 					elseif p.flavor == 2 then
 						healthLength = healthLength + 50
 						currentScore = currentScore + 100 
+						powerUpSFX:stop()
 						powerUpSFX:play()					
 					-- shield activation
 					elseif p.flavor == 3 then
@@ -81,11 +83,13 @@ function powerUpUpdate()
 						invulnerabilityTimer = 10
 						shieldTimer = 10
 						currentScore = currentScore + 100 
+						powerUpSFX:stop()
 						powerUpSFX:play()
 					--speed activation
 					elseif p.flavor == 4 then
 						speedTimer = 10
 						currentScore = currentScore + 100 
+						powerUpSFX:stop()
 						powerUpSFX:play()
 					end	
 				--destroys powerUp instance

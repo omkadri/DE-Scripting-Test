@@ -31,8 +31,8 @@ function love.load()
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
 	powerUpSFX = love.audio.newSource("sfx/powerUp.ogg", "static")
 	playerHitSFX = love.audio.newSource("sfx/playerHit.ogg", "static")
-	
-	
+	cooldownSFX = love.audio.newSource("sfx/cooldown.ogg", "static")
+		
 	--music
 	music = love.audio.newSource("sfx/ColdplayClocks8Bit.ogg", "static")
     music:setLooping(true)
