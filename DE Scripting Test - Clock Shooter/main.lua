@@ -45,10 +45,6 @@ function love.load()
 	--Game State Initialization
 	currentScore = 0
 
-		
-	maxTimeBetweenPowerUpSpawn = 2
-	powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
-
 end
 
 function love.update(dt)
@@ -64,12 +60,6 @@ function love.update(dt)
 		powerUpUpdate()
 		cooldownUpdate()
 		healthUpdate()
-		
-		powerUpSpawnTimer = powerUpSpawnTimer - dt
-		if powerUpSpawnTimer <= 0 then
-			spawnPowerUp(math.random(40, love.graphics:getWidth()-40), -30, math.random (1,15))
-			powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
-		end
 	end	
 
 end
@@ -79,8 +69,6 @@ end
 function love.draw(dt)
 	drawScrollingBackground()
 	love.graphics.print(currentScore, 650, 10, nil, 2, 2)
-
-
 	
 	if gameState == 2 then
 		powerUpDraw()

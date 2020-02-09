@@ -38,7 +38,7 @@ function love.mousepressed(x, y, b, istouch)
 			spawnmultishot()
 		elseif b ==1 and cooldown.overheated == false then
 			spawnBullet()
-			cooldown.length = cooldown.length + 20
+			cooldown.length = cooldown.length + 15
 		end
 	end
 end

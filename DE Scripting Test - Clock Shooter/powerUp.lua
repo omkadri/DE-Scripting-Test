@@ -34,7 +34,12 @@ function powerUpUpdate()
 	powerUpSpawnTimer = powerUpSpawnTimer - dt
 	if powerUpSpawnTimer <= 0 then
 		spawnPowerUp(math.random(0, love.graphics:getWidth()), -30, math.random (1,15))
+		maxTimeBetweenPowerUpSpawn = maxTimeBetweenPowerUpSpawn * 1.01
 		powerUpSpawnTimer = maxTimeBetweenPowerUpSpawn
+	end
+	
+	if maxTimeBetweenPowerUpSpawn >= 3.75 then
+		maxTimeBetweenPowerUpSpawn = 2.5
 	end
 
 	

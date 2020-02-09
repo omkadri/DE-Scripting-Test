@@ -7,7 +7,7 @@ cooldown = {}
 	
 function cooldownUpdate()
 	if cooldown.length > 0 then
-		cooldown.length = cooldown.length - 40 * dt
+		cooldown.length = cooldown.length - 55 * dt
 	end
 	if cooldown.length > 200 then
 		cooldown.length = 200
