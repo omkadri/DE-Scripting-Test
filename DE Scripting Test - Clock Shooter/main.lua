@@ -30,6 +30,8 @@ function love.load()
 	deathSFX = love.audio.newSource("sfx/death.ogg", "static")
 	bulletSFX = love.audio.newSource("sfx/bullet.ogg", "static")
 	powerUpSFX = love.audio.newSource("sfx/powerUp.ogg", "static")
+	playerHitSFX = love.audio.newSource("sfx/playerHit.ogg", "static")
+	
 	
 	--music
 	music = love.audio.newSource("sfx/ColdplayClocks8Bit.ogg", "static")

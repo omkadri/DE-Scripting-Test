@@ -80,6 +80,8 @@ function enemyClockUpdate()
 				invulnerability = true
 				healthLength = healthLength - 50
 				invulnerabilityTimer = 0.25 -- So player has time to breathe before being instantly destroyed by new enemyClock spawn
+				playerHitSFX:stop()
+				playerHitSFX:play()
 				table.remove(enemyClockTracker, i) 
 		elseif distanceBetween(z.x, z.y, player.x, player.y) < (z.radius+10) and invulnerability == true then
 				table.remove(enemyClockTracker, i) 

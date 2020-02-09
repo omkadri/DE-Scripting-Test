@@ -28,27 +28,34 @@ function drawCanvas()
 	end
 	
 	--HEALTH BAR
-	if healthLength >0 then
+	if healthLength >=150 then
 		love.graphics.setColor(0,1,0)
 		love.graphics.rectangle( "fill", 30, 910, healthLength, 15 )
-		love.graphics.rectangle( "line", 30, 910, 200, 15 )
 		love.graphics.setColor(255, 255, 255)
-		love.graphics.draw(sprites.health, 5, 907, nil, 0.35, 0.35)
-
+	elseif healthLength ==100 then
+		love.graphics.setColor(1,1,0)
+		love.graphics.rectangle( "fill", 30, 910, healthLength, 15 )
+		love.graphics.setColor(255, 255, 255)
+	elseif healthLength ==50 then
+		love.graphics.setColor(1,0,0)
+		love.graphics.rectangle( "fill", 30, 910, healthLength, 15 )
+		love.graphics.setColor(255, 255, 255)
 	end
+	love.graphics.rectangle( "line", 30, 910, 200, 15 )
+	love.graphics.draw(sprites.health, 5, 907, nil, 0.35, 0.35)
 	
 	
 	--COOLDOWN
 	--makes color more red as guage length increases
 	if cooldown.length < 100 and cooldown.overheated == false then
-		love.graphics.setColor(1,1,0)
+		love.graphics.setColor(1,0.6,0)
 	elseif cooldown.overheated == false then
 		love.graphics.setColor(1,0.4,0)
 	else love.graphics.setColor(math.random(0,1),0,0)
 	end
 	love.graphics.rectangle( "fill", 30, 935, cooldown.length, 15 )
-	love.graphics.rectangle( "line", 30, 935, 200, 15 )
 	love.graphics.setColor(255, 255, 255)
+	love.graphics.rectangle( "line", 30, 935, 200, 15 )
 	love.graphics.draw(sprites.bullet, 5, 932, nil, 0.35, 0.35)
 	
 	--draws OVERHEATED!!! text warning
