@@ -29,14 +29,6 @@ end
 
 --called in main.lua
 function drawHealth()
-
-	--draws health bar
-	if healthLength >0 then
-		love.graphics.setColor(0,1,0)
-		love.graphics.rectangle( "fill", 10, 10, healthLength, 15 )
-		love.graphics.setColor(255, 255, 255)
-	end
-	
 			--draws wear-and-tear damage sprites on player (based on current health)
 			if healthLength ==150 then
 				love.graphics.draw(sprites.damage1, player.x, player.y, playerMouseAngleCalculation(), nil, nil, player.offsetX, player.offsetY)

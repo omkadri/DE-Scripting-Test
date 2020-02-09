@@ -86,12 +86,5 @@ function drawmultishot()
 		--right bullet
 		love.graphics.draw(sprites.bullet, b.x2, b.y2, nil, 0.5, 0.5,multishot.offsetX,multishot.offsetY)
 	end
-	
-	--draws multishot UI timer
-	if multishotActivate == true then
-		love.graphics.setColor(1,0.5,0)
-		love.graphics.print("Multishot: "..math.ceil(multishotTimer), 10, 50, nil, 2, 2)
-		cooldown.overheated = false
-	end
 end
 

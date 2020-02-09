@@ -2,7 +2,7 @@ gameState = 2
 
 function love.load()
 	--sets up window
-	success = love.window.setMode( 750, 900)
+	success = love.window.setMode( 750, 1000)
 	love.window.setTitle("Omar Kadri - DE Scripting Test")
 	
 	-- makes mouse invisible and locks to screen
@@ -45,6 +45,7 @@ function love.load()
 	require ('scrollingBackground')
 	require ('powerUp')
 	require ('health')
+	require ('canvas')
 	
 	--Game State Initialization
 	currentScore = 0
@@ -69,16 +70,15 @@ end
 
 function love.draw(dt)
 	drawScrollingBackground()
-	love.graphics.print(currentScore, 650, 10, nil, 2, 2)
 	
 	if gameState == 2 then
 		powerUpDraw()
 		drawEnemyClock()
 		drawmultishot()
 		drawBullet()
-		drawCooldown()
 		drawPlayer()
 		drawHealth()
+		drawCanvas()
 	end
 	
 	if gameState == 3 then

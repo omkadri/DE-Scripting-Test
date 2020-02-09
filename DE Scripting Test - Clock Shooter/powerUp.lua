@@ -119,20 +119,9 @@ function powerUpDraw()
 				love.graphics.draw(sprites.superSpeed, p.x, p.y, nil, 0.5, 0.5,powerUp.offsetX,powerUp.offsetY)
 			end
 	end
-	
-	--draws shield countdown
+
 	if shieldTimer > 0 then
-		love.graphics.setColor(0,1,0)
-		love.graphics.print("Overshield: "..math.ceil(shieldTimer), 10, 80, nil, 2, 2)
-		love.graphics.setColor(255,255,255)
 		love.graphics.draw(sprites.shieldEffect, player.x, player.y, nil, 1, 1,sprites.shieldEffect:getWidth()/2,sprites.shieldEffect:getHeight()/2)
-	end
-	
-	--draws superSpeed countdown
-	if speedTimer > 0 then
-		love.graphics.setColor(0,1,1)
-		love.graphics.print("Super Speed: "..math.ceil(speedTimer), 10, 110, nil, 2, 2)
-		love.graphics.setColor(255,255,255)
 	end
 end
 	
