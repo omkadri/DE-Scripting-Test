@@ -5094,7 +5094,7 @@ If the health segment is not depleted in time, then the tube will be reconnected
 Once all 4 segments are destroyed, LK enters his second phase. At this point, I would make the health bar return to full size and have LK's health regenerate on last time. At this point, phase 2 will continue as it currently does\par
 \par
 \cf1\b\i Potential Issues with change: \par
-\cf0\b0\i0 Regarding the swich to a 3-tier health system, there could be more data variables to deal with:\par
+\cf0\b0\i0 Regarding the switch to a 3-tier health system, there could be more data variables to deal with:\par
 (example:  currentHealthSegment.Length, Tube1Connected = True, etc). \par
 Being that there will be more variables to deal with, there is greater potential for things to go wrong (eg variables not carrying over from a host migration).\par
 This is where the QA team comes in handy - I would give them an overview of the changed mechanic and ask them to run the boss battle a number of times to see if they can break it. The results from their tests can determine the magnitude of making this change. If it were too complex, I imagine we can simply reset the boss code to a previous commit. \par
