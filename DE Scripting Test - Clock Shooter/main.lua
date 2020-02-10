@@ -84,40 +84,16 @@ function love.draw(dt)
 	end
 	
 	if gameState == 3 then
-		love.graphics.print("GAME OVER!!!", love.graphics:getWidth()/2, love.graphics:getHeight()/2)
+		love.graphics.print("GAME OVER!!!", 250, 445, nil , 3, 3)
+		love.graphics.setColor(0, 1, 0)
+		love.graphics.print("Final Score: "..currentScore, 250, 490, nil, 3, 3)
+		love.graphics.setColor(255, 255, 255)
+		love.graphics.print("'ALT' + 'F4' To Quit...", 210, 590, nil, 3, 3)
 	end
 	
 	--draws reticle
 	love.graphics.draw(sprites.reticle, love.mouse.getX(), love.mouse.getY(),nil, nil, nil, sprites.reticle:getWidth()/2, sprites.reticle:getHeight()/2)
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

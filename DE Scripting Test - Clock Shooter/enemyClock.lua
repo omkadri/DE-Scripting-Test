@@ -65,7 +65,7 @@ function enemyClockUpdate()
 	--MAIN ENEMYCLOCK FOR LOOP
 	for i,z in ipairs(enemyClockTracker) do
 
-		--moves enemyClock towards player
+		--moves enemyClock in downward direction
 		z.x = z.x + z.vectorX * z.speed * z.direction * dt
 		z.y = z.y + z.vectorY * z.speed * dt
 	
@@ -76,7 +76,7 @@ function enemyClockUpdate()
 		end
 		
 		--collision with player
-		if distanceBetween(z.x, z.y, player.x, player.y) < (z.radius+10) and invulnerability == false then
+		if distanceBetween(z.x, z.y, player.x, player.y) < (z.radius+20) and invulnerability == false then
 				invulnerability = true
 				healthLength = healthLength - 50
 				invulnerabilityTimer = 0.25 -- So player has time to breathe before being instantly destroyed by new enemyClock spawn

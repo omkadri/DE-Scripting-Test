@@ -1,5 +1,5 @@
 function drawCanvas()
-	love.graphics.setColor(0,0,0)
+	love.graphics.setColor(0.1,0.1,0.1)
 	love.graphics.rectangle( "fill", 0, 900, love.graphics:getWidth(), 100)
 	
 	--DRAW SHIELD TIMER
